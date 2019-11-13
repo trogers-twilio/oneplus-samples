@@ -1,5 +1,15 @@
 # Sample code for OnePlus and Tin Tin
 
+- [Example Studio Flows](#example-studio-flows)
+  * [Messaging with Lookup and Language](#-messaging-with-lookup-and-language--studio-flows-messaging-with-lookup-and-languagejson-)
+    + [Overview](#overview)
+    + [Function Dependencies](#function-dependencies)
+    + [Deploying Studio Flow](#deploying-studio-flow)
+    + [Cleaning up Function References](#cleaning-up-function-references)
+- [Example Flex Plugins](#example-flex-plugins)
+  * [Chat Auto Accept](#-chat-auto-accept--https---githubcom-trogers-twilio-oneplus-samples-tree-master-flex-plugins-plugin-chat-auto-accept-)
+    + [Overview](#overview-1)
+
 ## Example Studio Flows
 ### [Messaging with Lookup and Language](studio-flows/messaging-with-lookup-and-language.json)
 #### Overview
