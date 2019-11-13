@@ -1,0 +1,258 @@
+{
+  "description": "Messaging with Lookup and Language",
+  "states": [
+    {
+      "name": "Trigger",
+      "type": "InitialState",
+      "properties": {
+        "offset": {
+          "x": 0,
+          "y": -10
+        },
+        "flow_url": "https://webhooks.twilio.com/v1/Accounts/AC5b097c7cc511678abc190a2120264bef/Flows/FW23dafdb45cd57841bb6281b3ff0b35f3"
+      },
+      "transitions": [
+        {
+          "event": "incomingMessage",
+          "conditions": [],
+          "next": "FF8c63b1041818d51a87ce40eb9d80ad2d",
+          "uuid": "0359f3b0-df83-4138-bdbc-5a491fd1bc50"
+        },
+        {
+          "event": "incomingCall",
+          "conditions": [],
+          "next": null,
+          "uuid": "79e447e6-b743-4c8c-b2b4-bb95379e6725"
+        },
+        {
+          "event": "incomingRequest",
+          "conditions": [],
+          "next": null,
+          "uuid": "9b8cab12-aedf-43b3-937b-a25500df16c0"
+        }
+      ],
+      "sid": "FF65f9e2d8d879c287052329d0c74afc6b"
+    },
+    {
+      "name": "SendToLevel1",
+      "type": "SendToFlex",
+      "properties": {
+        "offset": {
+          "x": 50,
+          "y": 1560
+        },
+        "workflow": "WW30f9719bec2cc33896baad48009ea906",
+        "channel": "TCe97abe107df7417d4d29c84a7b16afa5",
+        "attributes": "{\"name\": \"{{trigger.message.ChannelAttributes.from}}\", \"channelType\": \"{{trigger.message.ChannelAttributes.channel_type}}\", \"channelSid\": \"{{trigger.message.ChannelSid}}\", \"toNumber\": \"{{trigger.message.ChannelAttributes.to}}\",\"country\":\"{{flow.variables.countryCode}}\",\"language\":\"{{flow.variables.language}}\"}",
+        "timeout": null,
+        "priority": null,
+        "waitUrl": null,
+        "waitUrlMethod": null
+      },
+      "transitions": [
+        {
+          "event": "callComplete",
+          "conditions": [],
+          "next": null,
+          "uuid": "8625dffa-579e-4181-ad79-7f569fa1ff9f"
+        },
+        {
+          "event": "failedToEnqueue",
+          "conditions": [],
+          "next": null,
+          "uuid": "774ebfc5-bab2-4346-a9b6-670f0792b495"
+        },
+        {
+          "event": "callFailure",
+          "conditions": [],
+          "next": null,
+          "uuid": "ca2c0ffd-6e95-4480-8211-b51fa85fe070"
+        }
+      ],
+      "sid": "FF2b2a73aab7e35601ecc23fd78d7a6fb1"
+    },
+    {
+      "name": "SetCountryCode",
+      "type": "SetVariables",
+      "properties": {
+        "offset": {
+          "x": 30,
+          "y": 440
+        },
+        "variables": [
+          {
+            "key": "countryCode",
+            "value": "{{widgets.FunctionLookupPhoneNumber.parsed.countryCode}}",
+            "index": "0"
+          }
+        ]
+      },
+      "transitions": [
+        {
+          "event": "next",
+          "conditions": [],
+          "next": "FF95bf9bf5340b35dc27b4be908f824856",
+          "uuid": "fdbf7e3b-2249-4844-b887-417e0d58b07b"
+        }
+      ],
+      "sid": "FF34bebeee44efac1b1414e0c1df239cec"
+    },
+    {
+      "name": "FunctionLookupPhoneNumber",
+      "type": "Function",
+      "properties": {
+        "offset": {
+          "x": 30,
+          "y": 210
+        },
+        "url": "https://folly-rail-4787.twil.io/lookup-source-number",
+        "timeout": null,
+        "parameters": [
+          {
+            "key": "phoneNumber",
+            "value": "{{trigger.message.ChannelAttributes.from}}"
+          }
+        ]
+      },
+      "transitions": [
+        {
+          "event": "success",
+          "conditions": [],
+          "next": "FF34bebeee44efac1b1414e0c1df239cec",
+          "uuid": "610d7b7e-0aa0-4562-89ff-5018bc2c9859"
+        },
+        {
+          "event": "fail",
+          "conditions": [],
+          "next": null,
+          "uuid": "6613134e-04cd-4817-bcff-db11d3a610d4"
+        }
+      ],
+      "sid": "FF8c63b1041818d51a87ce40eb9d80ad2d"
+    },
+    {
+      "name": "FunctionGetLanguage",
+      "type": "Function",
+      "properties": {
+        "offset": {
+          "x": 40,
+          "y": 650
+        },
+        "url": "https://folly-rail-4787.twil.io/get-language-by-country-code",
+        "timeout": null,
+        "parameters": [
+          {
+            "key": "countryCode",
+            "value": "{{flow.variables.countryCode}}"
+          }
+        ]
+      },
+      "transitions": [
+        {
+          "event": "success",
+          "conditions": [],
+          "next": "FFcb474bf2be8c7f9f0868db95fabb604b",
+          "uuid": "1a9b42d3-c7c7-44e1-8ea1-027e5338a076"
+        },
+        {
+          "event": "fail",
+          "conditions": [],
+          "next": null,
+          "uuid": "89720f8f-592c-4918-a9fe-0b22277a4708"
+        }
+      ],
+      "sid": "FF95bf9bf5340b35dc27b4be908f824856"
+    },
+    {
+      "name": "SetLanguage",
+      "type": "SetVariables",
+      "properties": {
+        "offset": {
+          "x": 40,
+          "y": 870
+        },
+        "variables": [
+          {
+            "key": "language",
+            "value": "zh-CN",
+            "index": "0"
+          }
+        ]
+      },
+      "transitions": [
+        {
+          "event": "next",
+          "conditions": [],
+          "next": "FF1e739bf37ae87dbf94f561b9ac757f90",
+          "uuid": "6d2f115d-918c-4595-869b-aaa9fdf5d8d3"
+        }
+      ],
+      "sid": "FFcb474bf2be8c7f9f0868db95fabb604b"
+    },
+    {
+      "name": "FunctionGetGreeting",
+      "type": "Function",
+      "properties": {
+        "offset": {
+          "x": 50,
+          "y": 1100
+        },
+        "url": "https://folly-rail-4787.twil.io/get-message-greeting",
+        "timeout": null,
+        "parameters": [
+          {
+            "key": "language",
+            "value": "{{flow.variables.language}}"
+          }
+        ]
+      },
+      "transitions": [
+        {
+          "event": "success",
+          "conditions": [],
+          "next": "FF60cc03d7fed07c69a7e6a6dffae640a9",
+          "uuid": "30b6c44f-4b43-456d-a877-88325b5d8ed0"
+        },
+        {
+          "event": "fail",
+          "conditions": [],
+          "next": null,
+          "uuid": "ae0977ee-7751-450d-9d87-4b37d9b7e1a1"
+        }
+      ],
+      "sid": "FF1e739bf37ae87dbf94f561b9ac757f90"
+    },
+    {
+      "name": "SendGreeting",
+      "type": "Message",
+      "properties": {
+        "offset": {
+          "x": 50,
+          "y": 1320
+        },
+        "body": "{{widgets.FunctionGetGreeting.parsed.message}}",
+        "from": "{{flow.channel.address}}",
+        "to": "{{contact.channel.address}}",
+        "media_url": null,
+        "service": "{{trigger.message.InstanceSid}}",
+        "channel": "{{trigger.message.ChannelSid}}",
+        "attributes": null
+      },
+      "transitions": [
+        {
+          "event": "sent",
+          "conditions": [],
+          "next": "FF2b2a73aab7e35601ecc23fd78d7a6fb1",
+          "uuid": "23ca4123-a694-4f31-a834-40098868dd00"
+        },
+        {
+          "event": "failed",
+          "conditions": [],
+          "next": null,
+          "uuid": "a6472793-6ec3-4f5b-8c8b-38b67c3b9ed3"
+        }
+      ],
+      "sid": "FF60cc03d7fed07c69a7e6a6dffae640a9"
+    }
+  ]
+}
