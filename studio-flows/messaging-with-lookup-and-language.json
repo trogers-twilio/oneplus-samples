@@ -16,19 +16,19 @@
           "event": "incomingMessage",
           "conditions": [],
           "next": "FF8c63b1041818d51a87ce40eb9d80ad2d",
-          "uuid": "0359f3b0-df83-4138-bdbc-5a491fd1bc50"
+          "uuid": "042ba699-e3fc-49b4-96db-45b51509e645"
         },
         {
           "event": "incomingCall",
           "conditions": [],
           "next": null,
-          "uuid": "79e447e6-b743-4c8c-b2b4-bb95379e6725"
+          "uuid": "a02d2c46-345a-477a-935a-727b995c8a99"
         },
         {
           "event": "incomingRequest",
           "conditions": [],
           "next": null,
-          "uuid": "9b8cab12-aedf-43b3-937b-a25500df16c0"
+          "uuid": "56352140-3e03-4720-a3d8-dcd13ca7f172"
         }
       ],
       "sid": "FF65f9e2d8d879c287052329d0c74afc6b"
@@ -54,19 +54,19 @@
           "event": "callComplete",
           "conditions": [],
           "next": null,
-          "uuid": "8625dffa-579e-4181-ad79-7f569fa1ff9f"
+          "uuid": "c6570c6c-bb7b-4c41-b64d-b51a730c36bd"
         },
         {
           "event": "failedToEnqueue",
           "conditions": [],
           "next": null,
-          "uuid": "774ebfc5-bab2-4346-a9b6-670f0792b495"
+          "uuid": "0917d882-c6c0-4b64-ba38-d718aa65eec5"
         },
         {
           "event": "callFailure",
           "conditions": [],
           "next": null,
-          "uuid": "ca2c0ffd-6e95-4480-8211-b51fa85fe070"
+          "uuid": "e44a5fff-148a-41b4-a3e8-4e0208846894"
         }
       ],
       "sid": "FF2b2a73aab7e35601ecc23fd78d7a6fb1"
@@ -92,7 +92,7 @@
           "event": "next",
           "conditions": [],
           "next": "FF95bf9bf5340b35dc27b4be908f824856",
-          "uuid": "fdbf7e3b-2249-4844-b887-417e0d58b07b"
+          "uuid": "b12018b4-2ed5-4b05-8724-b4ea8c87a68b"
         }
       ],
       "sid": "FF34bebeee44efac1b1414e0c1df239cec"
@@ -119,13 +119,13 @@
           "event": "success",
           "conditions": [],
           "next": "FF34bebeee44efac1b1414e0c1df239cec",
-          "uuid": "610d7b7e-0aa0-4562-89ff-5018bc2c9859"
+          "uuid": "9a0d7801-9c14-4b58-ac25-5b1982026377"
         },
         {
           "event": "fail",
           "conditions": [],
           "next": null,
-          "uuid": "6613134e-04cd-4817-bcff-db11d3a610d4"
+          "uuid": "daede5c4-3552-4b97-97ae-78e3d905d8f5"
         }
       ],
       "sid": "FF8c63b1041818d51a87ce40eb9d80ad2d"
@@ -152,13 +152,13 @@
           "event": "success",
           "conditions": [],
           "next": "FFcb474bf2be8c7f9f0868db95fabb604b",
-          "uuid": "1a9b42d3-c7c7-44e1-8ea1-027e5338a076"
+          "uuid": "881410af-0321-4dd1-a959-73152bd57bd4"
         },
         {
           "event": "fail",
           "conditions": [],
           "next": null,
-          "uuid": "89720f8f-592c-4918-a9fe-0b22277a4708"
+          "uuid": "91afecb3-728e-44f2-b619-71a4ccce9112"
         }
       ],
       "sid": "FF95bf9bf5340b35dc27b4be908f824856"
@@ -174,7 +174,7 @@
         "variables": [
           {
             "key": "language",
-            "value": "zh-CN",
+            "value": "{{widgets.FunctionGetLanguage.parsed.language}}",
             "index": "0"
           }
         ]
@@ -184,7 +184,7 @@
           "event": "next",
           "conditions": [],
           "next": "FF1e739bf37ae87dbf94f561b9ac757f90",
-          "uuid": "6d2f115d-918c-4595-869b-aaa9fdf5d8d3"
+          "uuid": "5d66d953-786a-4204-a3d9-be19d879224a"
         }
       ],
       "sid": "FFcb474bf2be8c7f9f0868db95fabb604b"
@@ -211,13 +211,13 @@
           "event": "success",
           "conditions": [],
           "next": "FF60cc03d7fed07c69a7e6a6dffae640a9",
-          "uuid": "30b6c44f-4b43-456d-a877-88325b5d8ed0"
+          "uuid": "b0e6aa4e-8ede-47a9-ac41-2ec91d6d0466"
         },
         {
           "event": "fail",
           "conditions": [],
           "next": null,
-          "uuid": "ae0977ee-7751-450d-9d87-4b37d9b7e1a1"
+          "uuid": "7f2fe6b7-6be1-4991-a21b-46308c098cfd"
         }
       ],
       "sid": "FF1e739bf37ae87dbf94f561b9ac757f90"
@@ -243,13 +243,13 @@
           "event": "sent",
           "conditions": [],
           "next": "FF2b2a73aab7e35601ecc23fd78d7a6fb1",
-          "uuid": "23ca4123-a694-4f31-a834-40098868dd00"
+          "uuid": "e35f1593-52d4-47dd-8626-c42b3272583b"
         },
         {
           "event": "failed",
           "conditions": [],
           "next": null,
-          "uuid": "a6472793-6ec3-4f5b-8c8b-38b67c3b9ed3"
+          "uuid": "3e4ee960-8131-4bd7-9734-16d70f9b13c6"
         }
       ],
       "sid": "FF60cc03d7fed07c69a7e6a6dffae640a9"
