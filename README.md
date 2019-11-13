@@ -1,17 +1,17 @@
 # Sample code for OnePlus and Tin Tin
 
 - [Example Studio Flows](#example-studio-flows)
-  * [Messaging with Lookup and Language](#-messaging-with-lookup-and-language--studio-flows-messaging-with-lookup-and-languagejson-)
+  * [Messaging with Lookup and Language](#messaging-with-lookup-and-language)
     + [Overview](#overview)
     + [Function Dependencies](#function-dependencies)
     + [Deploying Studio Flow](#deploying-studio-flow)
     + [Cleaning up Function References](#cleaning-up-function-references)
 - [Example Flex Plugins](#example-flex-plugins)
-  * [Chat Auto Accept](#-chat-auto-accept--https---githubcom-trogers-twilio-oneplus-samples-tree-master-flex-plugins-plugin-chat-auto-accept-)
+  * [Chat Auto Accept](#chat-auto-accept)
     + [Overview](#overview-1)
 
 ## Example Studio Flows
-### [Messaging with Lookup and Language](studio-flows/messaging-with-lookup-and-language.json)
+### Messaging with Lookup and Language
 #### Overview
 This Studio Flow provides an example of how to perform a Lookup with the customer's number using the Lookup API. This is used to retrieve the Country Code.
 
@@ -31,7 +31,7 @@ https://www.twilio.com/docs/studio/user-guide#importing-flow-data
 After importing the Studio Flow, it may be necessary to edit the Function widgets to point to your own versions of the functions. If so, open the newly imported Studio Flow and go through each widget starting with the word `Function` and select the correct function from the dropdown list.
 
 ## Example Flex Plugins
-### [Chat Auto Accept](https://github.com/trogers-twilio/oneplus-samples/tree/master/flex-plugins/plugin-chat-auto-accept)
+### Chat Auto Accept
 #### Overview
 This sample plugin shows you how to auto accept a chat based task
  
