@@ -1,0 +1,1797 @@
+{
+  "description": "Voice with Language Widgets",
+  "states": [
+    {
+      "name": "Trigger",
+      "type": "InitialState",
+      "properties": {
+        "offset": {
+          "x": 0,
+          "y": -10
+        },
+        "flow_url": "https://webhooks.twilio.com/v1/Accounts/AC5b097c7cc511678abc190a2120264bef/Flows/FW2531403313126b5c87e1f131d049390a"
+      },
+      "transitions": [
+        {
+          "event": "incomingMessage",
+          "conditions": [],
+          "next": null,
+          "uuid": "1906da01-8552-4fad-90b3-45221af3a04a"
+        },
+        {
+          "event": "incomingCall",
+          "conditions": [],
+          "next": "FF0369aa671907bc91cda8913766a8090c",
+          "uuid": "e8d5635b-292f-4653-9bec-c48d4a9eb4c8"
+        },
+        {
+          "event": "incomingRequest",
+          "conditions": [],
+          "next": null,
+          "uuid": "0faece2d-9c38-400f-b9fe-fe3e78d6b31e"
+        }
+      ],
+      "sid": "FF65f9e2d8d879c287052329d0c74afc6b"
+    },
+    {
+      "name": "SendToFlex",
+      "type": "SendToFlex",
+      "properties": {
+        "offset": {
+          "x": 40,
+          "y": 2980
+        },
+        "workflow": "WW08dbeef0125f7cc85c542eec07496a3e",
+        "channel": "TCd6e32efbb0dbec16030065ee5db54259",
+        "attributes": "{\"type\": \"inbound\", \"name\": \"{{trigger.call.From}}\",\"queue\":\"{{flow.variables.queue}}\",\"language\":\"{{flow.variables.language}}\"}",
+        "timeout": null,
+        "priority": null,
+        "waitUrl": null,
+        "waitUrlMethod": null
+      },
+      "transitions": [
+        {
+          "event": "callComplete",
+          "conditions": [],
+          "next": null,
+          "uuid": "e8723be6-0025-46db-9ee9-8caf4f9406d1"
+        },
+        {
+          "event": "failedToEnqueue",
+          "conditions": [],
+          "next": null,
+          "uuid": "cc33fa29-8e86-47d2-9f41-c5715ceffe06"
+        },
+        {
+          "event": "callFailure",
+          "conditions": [],
+          "next": null,
+          "uuid": "733813a8-2e12-48d2-ba5a-cc66064720b2"
+        }
+      ],
+      "sid": "FF2b2a73aab7e35601ecc23fd78d7a6fb1"
+    },
+    {
+      "name": "SetCountryCode",
+      "type": "SetVariables",
+      "properties": {
+        "offset": {
+          "x": -300,
+          "y": 520
+        },
+        "variables": [
+          {
+            "key": "countryCode",
+            "value": "{{trigger.call.CallerCountry}}",
+            "index": "0"
+          }
+        ]
+      },
+      "transitions": [
+        {
+          "event": "next",
+          "conditions": [],
+          "next": "FF95bf9bf5340b35dc27b4be908f824856",
+          "uuid": "c4c47516-e5fb-4be9-a389-335afbd789b8"
+        }
+      ],
+      "sid": "FF34bebeee44efac1b1414e0c1df239cec"
+    },
+    {
+      "name": "FunctionGetLanguage",
+      "type": "Function",
+      "properties": {
+        "offset": {
+          "x": 50,
+          "y": 520
+        },
+        "url": "https://folly-rail-4787.twil.io/get-language-by-country-code",
+        "timeout": null,
+        "parameters": [
+          {
+            "key": "countryCode",
+            "value": "{{flow.variables.countryCode}}"
+          }
+        ]
+      },
+      "transitions": [
+        {
+          "event": "success",
+          "conditions": [],
+          "next": "FFcb474bf2be8c7f9f0868db95fabb604b",
+          "uuid": "967b8919-8c32-4931-8fea-234d77b5fa31"
+        },
+        {
+          "event": "fail",
+          "conditions": [],
+          "next": null,
+          "uuid": "00e472e8-e408-40e1-b7f6-743119408cdd"
+        }
+      ],
+      "sid": "FF95bf9bf5340b35dc27b4be908f824856"
+    },
+    {
+      "name": "SetLanguage",
+      "type": "SetVariables",
+      "properties": {
+        "offset": {
+          "x": 430,
+          "y": 520
+        },
+        "variables": [
+          {
+            "key": "language",
+            "value": "{{widgets.FunctionGetLanguage.parsed.language}}",
+            "index": 0
+          }
+        ]
+      },
+      "transitions": [
+        {
+          "event": "next",
+          "conditions": [],
+          "next": "FFbe15f04ef5b86bfabd4517147545787b",
+          "uuid": "0f3c091e-dac4-4e98-8c7f-7b3006775481"
+        }
+      ],
+      "sid": "FFcb474bf2be8c7f9f0868db95fabb604b"
+    },
+    {
+      "name": "SetGreetingPrompts",
+      "type": "SetVariables",
+      "properties": {
+        "offset": {
+          "x": -300,
+          "y": 200
+        },
+        "variables": [
+          {
+            "key": "greeting_en",
+            "value": "Hello, thank you for calling.",
+            "index": "0"
+          },
+          {
+            "key": "greeting_zh",
+            "value": "你好, 感谢您打电话.",
+            "index": "1"
+          },
+          {
+            "key": "greeting_es",
+            "value": "Hola, gracias por llamar.",
+            "index": "2"
+          },
+          {
+            "key": "greeting_fr",
+            "value": "Salut, merci de votre appel.",
+            "index": "3"
+          },
+          {
+            "key": "greeting_it",
+            "value": "Ciao, grazie per la chiamata.",
+            "index": "4"
+          }
+        ]
+      },
+      "transitions": [
+        {
+          "event": "next",
+          "conditions": [],
+          "next": "FF922c75e34d459a9160b4b68e4b8a462d",
+          "uuid": "5ee25a51-a6a5-437e-80cb-7cbd50607ef8"
+        }
+      ],
+      "sid": "FF0369aa671907bc91cda8913766a8090c"
+    },
+    {
+      "name": "SetMainMenuPrompts",
+      "type": "SetVariables",
+      "properties": {
+        "offset": {
+          "x": 60,
+          "y": 210
+        },
+        "variables": [
+          {
+            "key": "mainMenu_en",
+            "value": "Press 1 for Sales, press 2 for Support, or wait for an Operator.",
+            "index": "0"
+          },
+          {
+            "key": "mainMenu_zh",
+            "value": "按1進行銷售, 按2進行支持, 或等待操作員."
+          },
+          {
+            "key": "mainMenu_es",
+            "value": "Presione 1 para Ventas, presione 2 para Soporte o espere a un Operador."
+          },
+          {
+            "key": "mainMenu_fr",
+            "value": "Appuyez sur 1 pour les ventes, appuyez sur 2 pour le support, ou attendez un opérateur."
+          },
+          {
+            "key": "mainMenu_it",
+            "value": "Premere 1 per Vendite, premere 2 per Supporto o attendere un Operatore."
+          }
+        ]
+      },
+      "transitions": [
+        {
+          "event": "next",
+          "conditions": [],
+          "next": "FFdb4c84efc6bb6d62208d57be13893d02",
+          "uuid": "2d2a491f-1cb9-43c9-b832-dcc9867d24fe"
+        }
+      ],
+      "sid": "FF922c75e34d459a9160b4b68e4b8a462d"
+    },
+    {
+      "name": "SetCallsRecordedPrompts",
+      "type": "SetVariables",
+      "properties": {
+        "offset": {
+          "x": 430,
+          "y": 210
+        },
+        "variables": [
+          {
+            "key": "callsRecorded_en",
+            "value": "This call will be recorded for quality assurance and training purposes."
+          },
+          {
+            "key": "callsRecorded_zh",
+            "value": "為了質量保證和培訓目的, 將記錄此呼叫."
+          },
+          {
+            "key": "callsRecorded_es",
+            "value": "Esta llamada se grabará con fines de garantía de calidad y capacitación."
+          },
+          {
+            "key": "callsRecorded_fr",
+            "value": "Cet appel sera enregistré à des fins d’assurance qualité et de formation."
+          },
+          {
+            "key": "callsRecorded_it",
+            "value": "Questa chiamata verrà registrata a fini di garanzia della qualità e formazione."
+          }
+        ]
+      },
+      "transitions": [
+        {
+          "event": "next",
+          "conditions": [],
+          "next": "FF34bebeee44efac1b1414e0c1df239cec",
+          "uuid": "c839f105-f544-436f-a8de-6b3079a98571"
+        }
+      ],
+      "sid": "FFdb4c84efc6bb6d62208d57be13893d02"
+    },
+    {
+      "name": "SplitGreetingLanguage",
+      "type": "Branch",
+      "properties": {
+        "offset": {
+          "x": -120,
+          "y": 790
+        },
+        "input": "{{flow.variables.language}}"
+      },
+      "transitions": [
+        {
+          "event": "noMatch",
+          "conditions": [],
+          "next": "FF0b068dfec1a54d038887b7d5236f2629",
+          "uuid": "1e600a0f-bfbc-4788-b6ae-439861689749"
+        },
+        {
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "en-AU",
+              "type": "equal_to",
+              "arguments": [
+                "{{flow.variables.language}}"
+              ],
+              "value": "en-AU"
+            }
+          ],
+          "next": "FF5d4fb211d3448078f9b779e618f01705",
+          "uuid": "9e691b80-15e5-482e-907a-1eaece2a2825"
+        },
+        {
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "en-CA",
+              "type": "equal_to",
+              "arguments": [
+                "{{flow.variables.language}}"
+              ],
+              "value": "en-CA"
+            }
+          ],
+          "next": "FFfa4b1371bda8636f42f2f48cb9cfea05",
+          "uuid": "05aa52f3-bb47-4f73-87f5-f1ac6c0cb87c"
+        },
+        {
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "en-GB",
+              "type": "equal_to",
+              "arguments": [
+                "{{flow.variables.language}}"
+              ],
+              "value": "en-GB"
+            }
+          ],
+          "next": "FF9a666b039a76e14c51c10a83268a0a9d",
+          "uuid": "441cf58a-53cf-4398-b0d1-ef053ef931d2"
+        },
+        {
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "en-IN",
+              "type": "equal_to",
+              "arguments": [
+                "{{flow.variables.language}}"
+              ],
+              "value": "en-IN"
+            }
+          ],
+          "next": "FFc8e62f386500fcdde3eef67af3923f28",
+          "uuid": "e83f0875-2ce7-483a-9eba-ec4570d3c4a2"
+        },
+        {
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "en-US",
+              "type": "equal_to",
+              "arguments": [
+                "{{flow.variables.language}}"
+              ],
+              "value": "en-US"
+            }
+          ],
+          "next": "FF0b068dfec1a54d038887b7d5236f2629",
+          "uuid": "8b26279e-a0bb-4983-8fdb-c18c7b912164"
+        },
+        {
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "zh-CN",
+              "type": "equal_to",
+              "arguments": [
+                "{{flow.variables.language}}"
+              ],
+              "value": "zh-CN"
+            }
+          ],
+          "next": "FF1e59516c37fb6a01dfdb00dea49ec49f",
+          "uuid": "a2966728-5553-43b1-9f19-b66abfed4c85"
+        },
+        {
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "ca-ES",
+              "type": "equal_to",
+              "arguments": [
+                "{{flow.variables.language}}"
+              ],
+              "value": "ca-ES"
+            }
+          ],
+          "next": "FF6582182661799e639f5377dd2c472c5b",
+          "uuid": "54b50a79-bf0c-49d6-830f-48a6a00e53dc"
+        },
+        {
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "fr-FR",
+              "type": "equal_to",
+              "arguments": [
+                "{{flow.variables.language}}"
+              ],
+              "value": "fr-FR"
+            }
+          ],
+          "next": "FF14f2b0a8e1519aa34a6f260e939e203c",
+          "uuid": "1dbc8724-9e96-4825-acd9-b2da3ec80390"
+        },
+        {
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "it-IT",
+              "type": "equal_to",
+              "arguments": [
+                "{{flow.variables.language}}"
+              ],
+              "value": "it-IT"
+            }
+          ],
+          "next": "FF7fee9944febb86b314fc7d3d14b9badb",
+          "uuid": "c8e81b9a-ccde-4f66-8c38-dd66262a825c"
+        }
+      ],
+      "sid": "FFbe15f04ef5b86bfabd4517147545787b"
+    },
+    {
+      "name": "SayGreeting_en-AU",
+      "type": "SayPlay",
+      "properties": {
+        "offset": {
+          "x": -1130,
+          "y": 1080
+        },
+        "say": "{{flow.variables.greeting_en}}",
+        "play": null,
+        "voice": "Polly.Nicole",
+        "language": "en-AU",
+        "loop": 1,
+        "digits": null
+      },
+      "transitions": [
+        {
+          "event": "audioComplete",
+          "conditions": [],
+          "next": "FF24940349238897064f050d27d0db6f6c",
+          "uuid": "4f2a5b6b-be7c-4420-83c4-0b94395cb2da"
+        }
+      ],
+      "sid": "FF5d4fb211d3448078f9b779e618f01705"
+    },
+    {
+      "name": "SayGreeting_en-CA",
+      "type": "SayPlay",
+      "properties": {
+        "offset": {
+          "x": -800,
+          "y": 1080
+        },
+        "say": "{{flow.variables.greeting_en}}",
+        "play": null,
+        "voice": "alice",
+        "language": "en-CA",
+        "loop": 1,
+        "digits": null
+      },
+      "transitions": [
+        {
+          "event": "audioComplete",
+          "conditions": [],
+          "next": "FF11ba735c0ed28c1beca758e80d69fa63",
+          "uuid": "abe15d4d-ad1b-4b45-92dd-931fc8f24204"
+        }
+      ],
+      "sid": "FFfa4b1371bda8636f42f2f48cb9cfea05"
+    },
+    {
+      "name": "SayGreeting_en-GB",
+      "type": "SayPlay",
+      "properties": {
+        "offset": {
+          "x": -470,
+          "y": 1080
+        },
+        "say": "{{flow.variables.greeting_en}}",
+        "play": null,
+        "voice": "Polly.Emma",
+        "language": "en-GB",
+        "loop": 1,
+        "digits": null
+      },
+      "transitions": [
+        {
+          "event": "audioComplete",
+          "conditions": [],
+          "next": "FFa94fb24607a518df3e49ad21cc7858f0",
+          "uuid": "9c7fb604-4c44-4b58-9293-ac8d8146095e"
+        }
+      ],
+      "sid": "FF9a666b039a76e14c51c10a83268a0a9d"
+    },
+    {
+      "name": "SayGreeting_en-IN",
+      "type": "SayPlay",
+      "properties": {
+        "offset": {
+          "x": -140,
+          "y": 1080
+        },
+        "say": "{{flow.variables.greeting_en}}",
+        "play": null,
+        "voice": "Polly.Aditi",
+        "language": "en-IN",
+        "loop": 1,
+        "digits": null
+      },
+      "transitions": [
+        {
+          "event": "audioComplete",
+          "conditions": [],
+          "next": "FF138596a2c649912fa2e85fa57a898ee9",
+          "uuid": "e2000bf0-4283-4182-a7db-b74fa10e64ea"
+        }
+      ],
+      "sid": "FFc8e62f386500fcdde3eef67af3923f28"
+    },
+    {
+      "name": "SayGreeting_en-US",
+      "type": "SayPlay",
+      "properties": {
+        "offset": {
+          "x": 190,
+          "y": 1080
+        },
+        "say": "{{flow.variables.greeting_en}}",
+        "play": null,
+        "voice": "Polly.Salli",
+        "language": "en-US",
+        "loop": 1,
+        "digits": null
+      },
+      "transitions": [
+        {
+          "event": "audioComplete",
+          "conditions": [],
+          "next": "FF0be46fe600d1611d18d3dbf60ed4bd53",
+          "uuid": "a23c3148-bc0e-4bc4-aa08-ce31d112258c"
+        }
+      ],
+      "sid": "FF0b068dfec1a54d038887b7d5236f2629"
+    },
+    {
+      "name": "SayGreeting_zh-CN",
+      "type": "SayPlay",
+      "properties": {
+        "offset": {
+          "x": 520,
+          "y": 1080
+        },
+        "say": "{{flow.variables.greeting_zh}}",
+        "play": null,
+        "voice": "alice",
+        "language": "zh-CN",
+        "loop": 1,
+        "digits": null
+      },
+      "transitions": [
+        {
+          "event": "audioComplete",
+          "conditions": [],
+          "next": "FFe8bce421f9527156fe8ae6f4291417b7",
+          "uuid": "200a163c-554e-445c-a10b-3fa992759a05"
+        }
+      ],
+      "sid": "FF1e59516c37fb6a01dfdb00dea49ec49f"
+    },
+    {
+      "name": "SayGreeting_ca-ES",
+      "type": "SayPlay",
+      "properties": {
+        "offset": {
+          "x": 850,
+          "y": 1080
+        },
+        "say": "{{flow.variables.greeting_es}}",
+        "play": null,
+        "voice": "Polly.Conchita",
+        "language": "es-ES",
+        "loop": 1,
+        "digits": null
+      },
+      "transitions": [
+        {
+          "event": "audioComplete",
+          "conditions": [],
+          "next": "FF147207c84aa26ce8a922be72a9a66917",
+          "uuid": "c023701e-3c95-4b3b-89d4-0d4b0409ec37"
+        }
+      ],
+      "sid": "FF6582182661799e639f5377dd2c472c5b"
+    },
+    {
+      "name": "SayGreeting_fr-FR",
+      "type": "SayPlay",
+      "properties": {
+        "offset": {
+          "x": 1180,
+          "y": 1080
+        },
+        "say": "{{flow.variables.greeting_fr}}",
+        "play": null,
+        "voice": "Polly.Celine",
+        "language": "fr-FR",
+        "loop": 1,
+        "digits": null
+      },
+      "transitions": [
+        {
+          "event": "audioComplete",
+          "conditions": [],
+          "next": "FF083d523037fa289561cde3191d6212d0",
+          "uuid": "453888d9-310a-4859-afa1-163eaf334c52"
+        }
+      ],
+      "sid": "FF14f2b0a8e1519aa34a6f260e939e203c"
+    },
+    {
+      "name": "SayGreeting_it-IT",
+      "type": "SayPlay",
+      "properties": {
+        "offset": {
+          "x": 1510,
+          "y": 1080
+        },
+        "say": "{{flow.variables.greeting_it}}",
+        "play": null,
+        "voice": "Polly.Carla",
+        "language": "it-IT",
+        "loop": 1,
+        "digits": null
+      },
+      "transitions": [
+        {
+          "event": "audioComplete",
+          "conditions": [],
+          "next": "FF0c525969a1c4bc2a1ca2e3faab5ec04d",
+          "uuid": "66c09571-9a5c-48c4-85ea-ce8106322ae9"
+        }
+      ],
+      "sid": "FF7fee9944febb86b314fc7d3d14b9badb"
+    },
+    {
+      "name": "GatherMainMenu_en-AU",
+      "type": "Gather",
+      "properties": {
+        "offset": {
+          "x": -1130,
+          "y": 1340
+        },
+        "timeout": 5,
+        "finish_on_key": "#",
+        "stop_gather": false,
+        "number_of_digits": 1,
+        "save_response_as": null,
+        "say": "{{flow.variables.mainMenu_en}}",
+        "play": null,
+        "voice": "Polly.Nicole",
+        "language": "en-AU",
+        "loop": 1,
+        "hints": null,
+        "gather_language": "en",
+        "speech_timeout": null,
+        "speech_model": null,
+        "profanity_filter": null
+      },
+      "transitions": [
+        {
+          "event": "keypress",
+          "conditions": [],
+          "next": "FF4aca6d23041325794435b6fe3094781f",
+          "uuid": "924ace4f-24c6-4ad1-90dd-2cc10c959e42"
+        },
+        {
+          "event": "speech",
+          "conditions": [],
+          "next": null,
+          "uuid": "44520a09-3a2b-4ec4-97cd-604b47be22df"
+        },
+        {
+          "event": "timeout",
+          "conditions": [],
+          "next": "FF4aca6d23041325794435b6fe3094781f",
+          "uuid": "8e7b5a5a-4585-4e8f-b777-b020150fd422"
+        }
+      ],
+      "sid": "FF24940349238897064f050d27d0db6f6c"
+    },
+    {
+      "name": "GatherMainMenu_en-CA",
+      "type": "Gather",
+      "properties": {
+        "offset": {
+          "x": -800,
+          "y": 1340
+        },
+        "timeout": 5,
+        "finish_on_key": "#",
+        "stop_gather": false,
+        "number_of_digits": 1,
+        "save_response_as": null,
+        "say": "{{flow.variables.mainMenu_en}}",
+        "play": null,
+        "voice": "alice",
+        "language": "en-CA",
+        "loop": 1,
+        "hints": null,
+        "gather_language": "en",
+        "speech_timeout": null,
+        "speech_model": null,
+        "profanity_filter": null
+      },
+      "transitions": [
+        {
+          "event": "keypress",
+          "conditions": [],
+          "next": "FFbe3c060ba253062b57bad82785e7a6d0",
+          "uuid": "ea469f2b-5d26-4500-b2a5-316cb66f3610"
+        },
+        {
+          "event": "speech",
+          "conditions": [],
+          "next": null,
+          "uuid": "c1f4e789-aa22-4cc5-a2b0-95474251741d"
+        },
+        {
+          "event": "timeout",
+          "conditions": [],
+          "next": "FFbe3c060ba253062b57bad82785e7a6d0",
+          "uuid": "9daf2784-7e77-4660-895e-28c64effb37a"
+        }
+      ],
+      "sid": "FF11ba735c0ed28c1beca758e80d69fa63"
+    },
+    {
+      "name": "GatherMainMenu_en-GB",
+      "type": "Gather",
+      "properties": {
+        "offset": {
+          "x": -470,
+          "y": 1340
+        },
+        "timeout": 5,
+        "finish_on_key": "#",
+        "stop_gather": false,
+        "number_of_digits": 1,
+        "save_response_as": null,
+        "say": "{{flow.variables.mainMenu_en}}",
+        "play": null,
+        "voice": "Polly.Emma",
+        "language": "en-GB",
+        "loop": 1,
+        "hints": null,
+        "gather_language": "en",
+        "speech_timeout": null,
+        "speech_model": null,
+        "profanity_filter": null
+      },
+      "transitions": [
+        {
+          "event": "keypress",
+          "conditions": [],
+          "next": "FF2d6a392006bedf4ce69e00494db992b2",
+          "uuid": "476d014e-f7d3-48b4-b9e4-00643c8ca6a7"
+        },
+        {
+          "event": "speech",
+          "conditions": [],
+          "next": null,
+          "uuid": "34d8ceae-6160-4092-be7c-ff03fbcac478"
+        },
+        {
+          "event": "timeout",
+          "conditions": [],
+          "next": "FF2d6a392006bedf4ce69e00494db992b2",
+          "uuid": "a5f7b6a3-e694-410c-8eb5-17fd8e555c9b"
+        }
+      ],
+      "sid": "FFa94fb24607a518df3e49ad21cc7858f0"
+    },
+    {
+      "name": "GatherMainMenu_en-IN",
+      "type": "Gather",
+      "properties": {
+        "offset": {
+          "x": -140,
+          "y": 1340
+        },
+        "timeout": 5,
+        "finish_on_key": "#",
+        "stop_gather": false,
+        "number_of_digits": 1,
+        "save_response_as": null,
+        "say": "{{flow.variables.mainMenu_en}}",
+        "play": null,
+        "voice": "Polly.Aditi",
+        "language": "en-IN",
+        "loop": 1,
+        "hints": null,
+        "gather_language": "en",
+        "speech_timeout": null,
+        "speech_model": null,
+        "profanity_filter": null
+      },
+      "transitions": [
+        {
+          "event": "keypress",
+          "conditions": [],
+          "next": "FF1d171bed301e2e8d00d263ee0623337a",
+          "uuid": "b410c56c-1ab7-4f39-a9e3-44c8c1313fe0"
+        },
+        {
+          "event": "speech",
+          "conditions": [],
+          "next": null,
+          "uuid": "37358ef8-dd0b-48be-b4db-9ac349a90701"
+        },
+        {
+          "event": "timeout",
+          "conditions": [],
+          "next": "FF1d171bed301e2e8d00d263ee0623337a",
+          "uuid": "672d61fc-8871-4f17-8b82-9e5d1ea3e79a"
+        }
+      ],
+      "sid": "FF138596a2c649912fa2e85fa57a898ee9"
+    },
+    {
+      "name": "GatherMainMenu_en-US",
+      "type": "Gather",
+      "properties": {
+        "offset": {
+          "x": 190,
+          "y": 1340
+        },
+        "timeout": 5,
+        "finish_on_key": "#",
+        "stop_gather": false,
+        "number_of_digits": 1,
+        "save_response_as": null,
+        "say": "{{flow.variables.mainMenu_en}}",
+        "play": null,
+        "voice": "Polly.Salli",
+        "language": "en-US",
+        "loop": 1,
+        "hints": null,
+        "gather_language": "en",
+        "speech_timeout": null,
+        "speech_model": null,
+        "profanity_filter": null
+      },
+      "transitions": [
+        {
+          "event": "keypress",
+          "conditions": [],
+          "next": "FFf364024ef5d5ff8cd3dab35f05deec2b",
+          "uuid": "505f15d6-44b4-4071-87ba-9a9851c6a8e8"
+        },
+        {
+          "event": "speech",
+          "conditions": [],
+          "next": null,
+          "uuid": "9f16fb74-d7fb-43a6-aa96-82c5f2ac748a"
+        },
+        {
+          "event": "timeout",
+          "conditions": [],
+          "next": "FFf364024ef5d5ff8cd3dab35f05deec2b",
+          "uuid": "c4a43a6d-9835-4364-bc7e-2b7b14402792"
+        }
+      ],
+      "sid": "FF0be46fe600d1611d18d3dbf60ed4bd53"
+    },
+    {
+      "name": "GatherMainMenu_zh-CN",
+      "type": "Gather",
+      "properties": {
+        "offset": {
+          "x": 520,
+          "y": 1340
+        },
+        "timeout": 5,
+        "finish_on_key": "#",
+        "stop_gather": false,
+        "number_of_digits": 1,
+        "save_response_as": null,
+        "say": "{{flow.variables.mainMenu_zh}}",
+        "play": null,
+        "voice": "alice",
+        "language": "zh-CN",
+        "loop": 1,
+        "hints": null,
+        "gather_language": "en",
+        "speech_timeout": null,
+        "speech_model": null,
+        "profanity_filter": null
+      },
+      "transitions": [
+        {
+          "event": "keypress",
+          "conditions": [],
+          "next": "FF80ab503baaa9267d686080242cabc788",
+          "uuid": "ffdad002-c323-4775-a2a0-75f0bf573497"
+        },
+        {
+          "event": "speech",
+          "conditions": [],
+          "next": null,
+          "uuid": "caa511d0-712b-4c89-b641-9d0be33b4fae"
+        },
+        {
+          "event": "timeout",
+          "conditions": [],
+          "next": "FF80ab503baaa9267d686080242cabc788",
+          "uuid": "e26b24a8-d52b-472e-89a9-6d66cdfddde3"
+        }
+      ],
+      "sid": "FFe8bce421f9527156fe8ae6f4291417b7"
+    },
+    {
+      "name": "GatherMainMenu_ca-ES",
+      "type": "Gather",
+      "properties": {
+        "offset": {
+          "x": 850,
+          "y": 1340
+        },
+        "timeout": 5,
+        "finish_on_key": "#",
+        "stop_gather": false,
+        "number_of_digits": 1,
+        "save_response_as": null,
+        "say": "{{flow.variables.mainMenu_es}}",
+        "play": null,
+        "voice": "Polly.Conchita",
+        "language": "es-ES",
+        "loop": 1,
+        "hints": null,
+        "gather_language": "en",
+        "speech_timeout": null,
+        "speech_model": null,
+        "profanity_filter": null
+      },
+      "transitions": [
+        {
+          "event": "keypress",
+          "conditions": [],
+          "next": "FF661503c04ea5e60bfdd7b32a67143ffd",
+          "uuid": "37fa438f-1d3b-4e93-a828-5c4c108f4be3"
+        },
+        {
+          "event": "speech",
+          "conditions": [],
+          "next": null,
+          "uuid": "5152f58a-61ef-4ba6-ada9-ccdde257e258"
+        },
+        {
+          "event": "timeout",
+          "conditions": [],
+          "next": "FF661503c04ea5e60bfdd7b32a67143ffd",
+          "uuid": "7834326e-812d-4eac-a757-2fd3c3a11564"
+        }
+      ],
+      "sid": "FF147207c84aa26ce8a922be72a9a66917"
+    },
+    {
+      "name": "GatherMainMenu_fr-FR",
+      "type": "Gather",
+      "properties": {
+        "offset": {
+          "x": 1180,
+          "y": 1340
+        },
+        "timeout": 5,
+        "finish_on_key": "#",
+        "stop_gather": false,
+        "number_of_digits": 1,
+        "save_response_as": null,
+        "say": "{{flow.variables.mainMenu_fr}}",
+        "play": null,
+        "voice": "Polly.Celine",
+        "language": "fr-FR",
+        "loop": 1,
+        "hints": null,
+        "gather_language": "en",
+        "speech_timeout": null,
+        "speech_model": null,
+        "profanity_filter": null
+      },
+      "transitions": [
+        {
+          "event": "keypress",
+          "conditions": [],
+          "next": "FFd372a34496ce6150b5c52b960aa77ffa",
+          "uuid": "513c4afd-0c96-4ef6-8c5b-e0d82750e940"
+        },
+        {
+          "event": "speech",
+          "conditions": [],
+          "next": null,
+          "uuid": "0da5e0a5-6a3d-4ca5-b9cd-cf2fb3d391e5"
+        },
+        {
+          "event": "timeout",
+          "conditions": [],
+          "next": "FFd372a34496ce6150b5c52b960aa77ffa",
+          "uuid": "8122bb78-c2c5-4cdb-a440-e317aeb48529"
+        }
+      ],
+      "sid": "FF083d523037fa289561cde3191d6212d0"
+    },
+    {
+      "name": "GatherMainMenu_it-IT",
+      "type": "Gather",
+      "properties": {
+        "offset": {
+          "x": 1510,
+          "y": 1340
+        },
+        "timeout": 5,
+        "finish_on_key": "#",
+        "stop_gather": false,
+        "number_of_digits": 1,
+        "save_response_as": null,
+        "say": "{{flow.variables.mainMenu_it}}",
+        "play": null,
+        "voice": "Polly.Carla",
+        "language": "it-IT",
+        "loop": 1,
+        "hints": null,
+        "gather_language": "en",
+        "speech_timeout": null,
+        "speech_model": null,
+        "profanity_filter": null
+      },
+      "transitions": [
+        {
+          "event": "keypress",
+          "conditions": [],
+          "next": "FFca89275bb19dcff65329e99d2748021e",
+          "uuid": "3c869848-77e6-4a9c-84cf-2146da185d34"
+        },
+        {
+          "event": "speech",
+          "conditions": [],
+          "next": null,
+          "uuid": "41f3b173-a5d8-4d5f-90c9-86c07307f3aa"
+        },
+        {
+          "event": "timeout",
+          "conditions": [],
+          "next": "FFca89275bb19dcff65329e99d2748021e",
+          "uuid": "06093374-ae57-4db5-a20e-029ba9792e4c"
+        }
+      ],
+      "sid": "FF0c525969a1c4bc2a1ca2e3faab5ec04d"
+    },
+    {
+      "name": "SplitGatherMainMenu",
+      "type": "Branch",
+      "properties": {
+        "offset": {
+          "x": 40,
+          "y": 1860
+        },
+        "input": "{{flow.variables.mainMenuDigits}}"
+      },
+      "transitions": [
+        {
+          "event": "noMatch",
+          "conditions": [],
+          "next": "FF3e77ce0fec8cde805c2274dcec2f8b1e",
+          "uuid": "4bcbc590-1510-456b-9b5b-827eaa9c74f7"
+        },
+        {
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "1",
+              "type": "equal_to",
+              "arguments": [
+                "{{flow.variables.mainMenuDigits}}"
+              ],
+              "value": "1"
+            }
+          ],
+          "next": "FF1a9f1fca8f920cdbf04ad66bcb894bb4",
+          "uuid": "31fe5974-9b7d-4624-b02d-711d94c1c2c7"
+        },
+        {
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "2",
+              "type": "equal_to",
+              "arguments": [
+                "{{flow.variables.mainMenuDigits}}"
+              ],
+              "value": "2"
+            }
+          ],
+          "next": "FF3e77ce0fec8cde805c2274dcec2f8b1e",
+          "uuid": "e7242818-3a60-4e7b-9767-c7053a4277be"
+        }
+      ],
+      "sid": "FF13c06fb1ca373564adeeb28ca7755389"
+    },
+    {
+      "name": "SetMainMenuDigits_en-AU",
+      "type": "SetVariables",
+      "properties": {
+        "offset": {
+          "x": -1130,
+          "y": 1570
+        },
+        "variables": [
+          {
+            "key": "mainMenuDigits",
+            "value": "{{widgets.GatherMainMenu_en-AU.Digits}}"
+          }
+        ]
+      },
+      "transitions": [
+        {
+          "event": "next",
+          "conditions": [],
+          "next": "FF13c06fb1ca373564adeeb28ca7755389",
+          "uuid": "8b90873e-9a40-494f-8ac6-f882b2114ba5"
+        }
+      ],
+      "sid": "FF4aca6d23041325794435b6fe3094781f"
+    },
+    {
+      "name": "SetMainMenuDigits_en-CA",
+      "type": "SetVariables",
+      "properties": {
+        "offset": {
+          "x": -800,
+          "y": 1570
+        },
+        "variables": [
+          {
+            "key": "mainMenuDigits",
+            "value": "{{widgets.GatherMainMenu_en-CA.Digits}}",
+            "index": "0"
+          }
+        ]
+      },
+      "transitions": [
+        {
+          "event": "next",
+          "conditions": [],
+          "next": "FF13c06fb1ca373564adeeb28ca7755389",
+          "uuid": "5c446eec-ead0-47d1-9ae6-4e72f42d3497"
+        }
+      ],
+      "sid": "FFbe3c060ba253062b57bad82785e7a6d0"
+    },
+    {
+      "name": "SetMainMenuDigits_en-GB",
+      "type": "SetVariables",
+      "properties": {
+        "offset": {
+          "x": -470,
+          "y": 1570
+        },
+        "variables": [
+          {
+            "key": "mainMenuDigits",
+            "value": "{{widgets.GatherMainMenu_en-GB.Digits}}",
+            "index": "0"
+          }
+        ]
+      },
+      "transitions": [
+        {
+          "event": "next",
+          "conditions": [],
+          "next": "FF13c06fb1ca373564adeeb28ca7755389",
+          "uuid": "1d5530c1-3bec-4f1d-85cb-16481a3bbeb8"
+        }
+      ],
+      "sid": "FF2d6a392006bedf4ce69e00494db992b2"
+    },
+    {
+      "name": "SetMainMenuDigits_en-IN",
+      "type": "SetVariables",
+      "properties": {
+        "offset": {
+          "x": -140,
+          "y": 1570
+        },
+        "variables": [
+          {
+            "key": "mainMenuDigits",
+            "value": "{{widgets.GatherMainMenu_en-IN.Digits}}",
+            "index": "0"
+          }
+        ]
+      },
+      "transitions": [
+        {
+          "event": "next",
+          "conditions": [],
+          "next": "FF13c06fb1ca373564adeeb28ca7755389",
+          "uuid": "afc86b2a-1325-49b0-a12c-ac8d7821368b"
+        }
+      ],
+      "sid": "FF1d171bed301e2e8d00d263ee0623337a"
+    },
+    {
+      "name": "SetMainMenuDigits_en-US",
+      "type": "SetVariables",
+      "properties": {
+        "offset": {
+          "x": 190,
+          "y": 1570
+        },
+        "variables": [
+          {
+            "key": "mainMenuDigits",
+            "value": "{{widgets.GatherMainMenu_en-US.Digits}}",
+            "index": "0"
+          }
+        ]
+      },
+      "transitions": [
+        {
+          "event": "next",
+          "conditions": [],
+          "next": "FF13c06fb1ca373564adeeb28ca7755389",
+          "uuid": "ef8a6305-14ee-4f44-9f95-533c0ec592a3"
+        }
+      ],
+      "sid": "FFf364024ef5d5ff8cd3dab35f05deec2b"
+    },
+    {
+      "name": "SetMainMenuDigits_zh-CN",
+      "type": "SetVariables",
+      "properties": {
+        "offset": {
+          "x": 520,
+          "y": 1570
+        },
+        "variables": [
+          {
+            "key": "mainMenuDigits",
+            "value": "{{widgets.GatherMainMenu_zh-CN.Digits}}",
+            "index": "0"
+          }
+        ]
+      },
+      "transitions": [
+        {
+          "event": "next",
+          "conditions": [],
+          "next": "FF13c06fb1ca373564adeeb28ca7755389",
+          "uuid": "17d864c2-5fef-4065-aa3d-16b0809f7841"
+        }
+      ],
+      "sid": "FF80ab503baaa9267d686080242cabc788"
+    },
+    {
+      "name": "SetMainMenuDigits_ca-ES",
+      "type": "SetVariables",
+      "properties": {
+        "offset": {
+          "x": 850,
+          "y": 1570
+        },
+        "variables": [
+          {
+            "key": "mainMenuDigits",
+            "value": "{{widgets.GatherMainMenu_ca-ES.Digits}}",
+            "index": "0"
+          }
+        ]
+      },
+      "transitions": [
+        {
+          "event": "next",
+          "conditions": [],
+          "next": "FF13c06fb1ca373564adeeb28ca7755389",
+          "uuid": "ee42e968-e70b-49b2-80bb-d6da38af5ab5"
+        }
+      ],
+      "sid": "FF661503c04ea5e60bfdd7b32a67143ffd"
+    },
+    {
+      "name": "SetMainMenuDigits_fr-FR",
+      "type": "SetVariables",
+      "properties": {
+        "offset": {
+          "x": 1180,
+          "y": 1570
+        },
+        "variables": [
+          {
+            "key": "mainMenuDigits",
+            "value": "{{widgets.GatherMainMenu_fr-FR.Digits}}",
+            "index": "0"
+          }
+        ]
+      },
+      "transitions": [
+        {
+          "event": "next",
+          "conditions": [],
+          "next": "FF13c06fb1ca373564adeeb28ca7755389",
+          "uuid": "ba1a94df-28b0-4b3c-8aa8-efba07034f14"
+        }
+      ],
+      "sid": "FFd372a34496ce6150b5c52b960aa77ffa"
+    },
+    {
+      "name": "SetMainMenuDigits_it-IT",
+      "type": "SetVariables",
+      "properties": {
+        "offset": {
+          "x": 1510,
+          "y": 1570
+        },
+        "variables": [
+          {
+            "key": "mainMenuDigits",
+            "value": "{{widgets.GatherMainMenu_it-IT.Digits}}",
+            "index": "0"
+          }
+        ]
+      },
+      "transitions": [
+        {
+          "event": "next",
+          "conditions": [],
+          "next": "FF13c06fb1ca373564adeeb28ca7755389",
+          "uuid": "ac5bf535-57fe-4390-80a3-60f7ef87b300"
+        }
+      ],
+      "sid": "FFca89275bb19dcff65329e99d2748021e"
+    },
+    {
+      "name": "SetQueueSales",
+      "type": "SetVariables",
+      "properties": {
+        "offset": {
+          "x": -140,
+          "y": 2110
+        },
+        "variables": [
+          {
+            "key": "queue",
+            "value": "Sales"
+          }
+        ]
+      },
+      "transitions": [
+        {
+          "event": "next",
+          "conditions": [],
+          "next": "FF77fd9ef308f8ab2a7b9ce9445b9c92e9",
+          "uuid": "5b3e1817-dad2-49dc-aaf7-1af0ef4d4d79"
+        }
+      ],
+      "sid": "FF1a9f1fca8f920cdbf04ad66bcb894bb4"
+    },
+    {
+      "name": "SetQueueSupport",
+      "type": "SetVariables",
+      "properties": {
+        "offset": {
+          "x": 220,
+          "y": 2110
+        },
+        "variables": [
+          {
+            "key": "queue",
+            "value": "Support",
+            "index": "0"
+          }
+        ]
+      },
+      "transitions": [
+        {
+          "event": "next",
+          "conditions": [],
+          "next": "FF77fd9ef308f8ab2a7b9ce9445b9c92e9",
+          "uuid": "9d117602-c7f7-4f68-a181-8ee8c6bcb002"
+        }
+      ],
+      "sid": "FF3e77ce0fec8cde805c2274dcec2f8b1e"
+    },
+    {
+      "name": "SplitCallsRecordedLanguage",
+      "type": "Branch",
+      "properties": {
+        "offset": {
+          "x": -130,
+          "y": 2400
+        },
+        "input": "{{flow.variables.language}}"
+      },
+      "transitions": [
+        {
+          "event": "noMatch",
+          "conditions": [],
+          "next": "FF8bf04442e4d9efaf38a912a79cbad015",
+          "uuid": "5aef27be-72a9-428c-9ca2-1600244f6f06"
+        },
+        {
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "en-AU",
+              "type": "equal_to",
+              "arguments": [
+                "{{flow.variables.language}}"
+              ],
+              "value": "en-AU"
+            }
+          ],
+          "next": "FFf63ba39d3fd9f963a21820526460a5e2",
+          "uuid": "84e4f826-8e2c-49ba-ba6e-d8fc0eadac58"
+        },
+        {
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "en-CA",
+              "type": "equal_to",
+              "arguments": [
+                "{{flow.variables.language}}"
+              ],
+              "value": "en-CA"
+            }
+          ],
+          "next": "FFf01b40a4b3946ff171be456b88fb25c4",
+          "uuid": "91656943-4ae8-4cdc-b9fd-45717c2e6db8"
+        },
+        {
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "en-GB",
+              "type": "equal_to",
+              "arguments": [
+                "{{flow.variables.language}}"
+              ],
+              "value": "en-GB"
+            }
+          ],
+          "next": "FFd4f2c364f66c4a6b633f3ed94184dd31",
+          "uuid": "8d38be06-0989-4446-b524-4d1d6579a71b"
+        },
+        {
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "en-IN",
+              "type": "equal_to",
+              "arguments": [
+                "{{flow.variables.language}}"
+              ],
+              "value": "en-IN"
+            }
+          ],
+          "next": "FFe726db164211dee6de7a3178e5270b28",
+          "uuid": "f88bbe71-00a1-401a-93ac-8a35fe9adc3d"
+        },
+        {
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "en-US",
+              "type": "equal_to",
+              "arguments": [
+                "{{flow.variables.language}}"
+              ],
+              "value": "en-US"
+            }
+          ],
+          "next": "FF8bf04442e4d9efaf38a912a79cbad015",
+          "uuid": "4a23dcd9-59df-4a3c-aca7-31ad6b230f82"
+        },
+        {
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "zh-CN",
+              "type": "equal_to",
+              "arguments": [
+                "{{flow.variables.language}}"
+              ],
+              "value": "zh-CN"
+            }
+          ],
+          "next": "FFd96b0a7ac1da4069af9a370596dd0a25",
+          "uuid": "30b01df8-da68-4e19-b827-0de0c79ac6a7"
+        },
+        {
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "ca-ES",
+              "type": "equal_to",
+              "arguments": [
+                "{{flow.variables.language}}"
+              ],
+              "value": "ca-ES"
+            }
+          ],
+          "next": "FFbdafd5cc5783698ba2bf9a1fc5a9a60f",
+          "uuid": "4ce559e2-db79-4ab2-8848-a09861363528"
+        },
+        {
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "fr-FR",
+              "type": "equal_to",
+              "arguments": [
+                "{{flow.variables.language}}"
+              ],
+              "value": "fr-FR"
+            }
+          ],
+          "next": "FF14ee2c48b24f2cea9f9d749f8c91d228",
+          "uuid": "937bf923-7ca8-4c0b-8528-e6f77923ac82"
+        },
+        {
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "it-IT",
+              "type": "equal_to",
+              "arguments": [
+                "{{flow.variables.language}}"
+              ],
+              "value": "it-IT"
+            }
+          ],
+          "next": "FF9c6bf054ec2c9a1ba13ccfcb87e4d1c6",
+          "uuid": "2dd97dee-0d63-4645-82a2-a49a11403570"
+        }
+      ],
+      "sid": "FF77fd9ef308f8ab2a7b9ce9445b9c92e9"
+    },
+    {
+      "name": "SayCallsRecorded_en-AU",
+      "type": "SayPlay",
+      "properties": {
+        "offset": {
+          "x": -1130,
+          "y": 2680
+        },
+        "say": "{{flow.variables.callsRecorded_en}}",
+        "play": null,
+        "voice": "Polly.Nicole",
+        "language": "en-AU",
+        "loop": 1,
+        "digits": null
+      },
+      "transitions": [
+        {
+          "event": "audioComplete",
+          "conditions": [],
+          "next": "FF2b2a73aab7e35601ecc23fd78d7a6fb1",
+          "uuid": "a611223f-e908-43f8-8b90-4fea525b27cb"
+        }
+      ],
+      "sid": "FFf63ba39d3fd9f963a21820526460a5e2"
+    },
+    {
+      "name": "SayCallsRecorded_en-CA",
+      "type": "SayPlay",
+      "properties": {
+        "offset": {
+          "x": -800,
+          "y": 2680
+        },
+        "say": "{{flow.variables.callsRecorded_en}}",
+        "play": null,
+        "voice": "alice",
+        "language": "en-CA",
+        "loop": 1,
+        "digits": null
+      },
+      "transitions": [
+        {
+          "event": "audioComplete",
+          "conditions": [],
+          "next": "FF2b2a73aab7e35601ecc23fd78d7a6fb1",
+          "uuid": "07151b33-50ba-43ad-a3d9-15d52fdf6dda"
+        }
+      ],
+      "sid": "FFf01b40a4b3946ff171be456b88fb25c4"
+    },
+    {
+      "name": "SayCallsRecorded_en-GB",
+      "type": "SayPlay",
+      "properties": {
+        "offset": {
+          "x": -470,
+          "y": 2680
+        },
+        "say": "{{flow.variables.callsRecorded_en}}",
+        "play": null,
+        "voice": "Polly.Emma",
+        "language": "en-GB",
+        "loop": 1,
+        "digits": null
+      },
+      "transitions": [
+        {
+          "event": "audioComplete",
+          "conditions": [],
+          "next": "FF2b2a73aab7e35601ecc23fd78d7a6fb1",
+          "uuid": "c314440b-403e-42c7-b15c-a297ab023b6e"
+        }
+      ],
+      "sid": "FFd4f2c364f66c4a6b633f3ed94184dd31"
+    },
+    {
+      "name": "SayCallsRecorded_en-IN",
+      "type": "SayPlay",
+      "properties": {
+        "offset": {
+          "x": -140,
+          "y": 2680
+        },
+        "say": "{{flow.variables.callsRecorded_en}}",
+        "play": null,
+        "voice": "Polly.Aditi",
+        "language": "en-IN",
+        "loop": 1,
+        "digits": null
+      },
+      "transitions": [
+        {
+          "event": "audioComplete",
+          "conditions": [],
+          "next": "FF2b2a73aab7e35601ecc23fd78d7a6fb1",
+          "uuid": "af6427cf-11ec-433d-9133-bdb198df7149"
+        }
+      ],
+      "sid": "FFe726db164211dee6de7a3178e5270b28"
+    },
+    {
+      "name": "SayCallsRecorded_en-US",
+      "type": "SayPlay",
+      "properties": {
+        "offset": {
+          "x": 190,
+          "y": 2680
+        },
+        "say": "{{flow.variables.callsRecorded_en}}",
+        "play": null,
+        "voice": "Polly.Salli",
+        "language": "en-US",
+        "loop": 1,
+        "digits": null
+      },
+      "transitions": [
+        {
+          "event": "audioComplete",
+          "conditions": [],
+          "next": "FF2b2a73aab7e35601ecc23fd78d7a6fb1",
+          "uuid": "e321c7eb-f9ff-40df-8ab0-1ec825b9fc1f"
+        }
+      ],
+      "sid": "FF8bf04442e4d9efaf38a912a79cbad015"
+    },
+    {
+      "name": "SayCallsRecorded_zh-CH",
+      "type": "SayPlay",
+      "properties": {
+        "offset": {
+          "x": 520,
+          "y": 2680
+        },
+        "say": "{{flow.variables.callsRecorded_zh}}",
+        "play": null,
+        "voice": "alice",
+        "language": "zh-CN",
+        "loop": 1,
+        "digits": null
+      },
+      "transitions": [
+        {
+          "event": "audioComplete",
+          "conditions": [],
+          "next": "FF2b2a73aab7e35601ecc23fd78d7a6fb1",
+          "uuid": "3d80eac8-b61b-4ecd-87a1-66471c6e5625"
+        }
+      ],
+      "sid": "FFd96b0a7ac1da4069af9a370596dd0a25"
+    },
+    {
+      "name": "SayCallsRecorded_ca-ES",
+      "type": "SayPlay",
+      "properties": {
+        "offset": {
+          "x": 850,
+          "y": 2680
+        },
+        "say": "{{flow.variables.callsRecorded_es}}",
+        "play": null,
+        "voice": "Polly.Conchita",
+        "language": "es-ES",
+        "loop": 1,
+        "digits": null
+      },
+      "transitions": [
+        {
+          "event": "audioComplete",
+          "conditions": [],
+          "next": "FF2b2a73aab7e35601ecc23fd78d7a6fb1",
+          "uuid": "d62030a3-3e54-41e2-9fbf-90016eedd7a5"
+        }
+      ],
+      "sid": "FFbdafd5cc5783698ba2bf9a1fc5a9a60f"
+    },
+    {
+      "name": "SayCallsRecorded_fr-FR",
+      "type": "SayPlay",
+      "properties": {
+        "offset": {
+          "x": 1180,
+          "y": 2680
+        },
+        "say": "{{flow.variables.callsRecorded_fr}}",
+        "play": null,
+        "voice": "Polly.Celine",
+        "language": "fr-FR",
+        "loop": 1,
+        "digits": null
+      },
+      "transitions": [
+        {
+          "event": "audioComplete",
+          "conditions": [],
+          "next": "FF2b2a73aab7e35601ecc23fd78d7a6fb1",
+          "uuid": "e61f1c69-35e2-444c-9f96-80486c6d4cca"
+        }
+      ],
+      "sid": "FF14ee2c48b24f2cea9f9d749f8c91d228"
+    },
+    {
+      "name": "SayCallsRecorded_it-IT",
+      "type": "SayPlay",
+      "properties": {
+        "offset": {
+          "x": 1510,
+          "y": 2680
+        },
+        "say": "{{flow.variables.callsRecorded_it}}",
+        "play": null,
+        "voice": "Polly.Carla",
+        "language": "it-IT",
+        "loop": 1,
+        "digits": null
+      },
+      "transitions": [
+        {
+          "event": "audioComplete",
+          "conditions": [],
+          "next": "FF2b2a73aab7e35601ecc23fd78d7a6fb1",
+          "uuid": "4d858ad7-3089-4ebe-a4d1-3f73937e7078"
+        }
+      ],
+      "sid": "FF9c6bf054ec2c9a1ba13ccfcb87e4d1c6"
+    }
+  ]
+}
