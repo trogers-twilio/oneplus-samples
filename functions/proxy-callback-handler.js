@@ -167,6 +167,8 @@ exports.handler = async function (context, event, callback) {
     }
   }
 
+  // This is the cleaned up chat message with a clearly identified sender and message
+  // attributes. This could then be written to the appropriate RightNow record.
   const normalizedChatMessage = {
     timestamp: interactionDateUpdated,
     sender: chatMemberName,
