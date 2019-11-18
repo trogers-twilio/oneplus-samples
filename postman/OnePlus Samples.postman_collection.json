@@ -1,0 +1,129 @@
+{
+	"info": {
+		"_postman_id": "3ba848fa-e7d6-4a99-862b-1633c895d7ed",
+		"name": "OnePlus Samples",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Flex Flows",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://flex-api.twilio.com/v1/FlexFlows/",
+					"protocol": "https",
+					"host": [
+						"flex-api",
+						"twilio",
+						"com"
+					],
+					"path": [
+						"v1",
+						"FlexFlows",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Flex Flow (Studio)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "text/plain",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "ChannelType",
+							"value": "whatsapp",
+							"type": "text"
+						},
+						{
+							"key": "IntegrationType",
+							"value": "studio",
+							"type": "text"
+						},
+						{
+							"key": "Enabled",
+							"value": "true",
+							"type": "text"
+						},
+						{
+							"key": "FriendlyName",
+							"value": "Flex WhatsApp FlexFlow",
+							"type": "text"
+						},
+						{
+							"key": "ContactIdentity",
+							"value": "{{TwilioWhatsAppNumber}}",
+							"type": "text"
+						},
+						{
+							"key": "ChatServiceSid",
+							"value": "{{TwilioChatServiceSid}}",
+							"type": "text"
+						},
+						{
+							"key": "Integration.WorkspaceSid",
+							"value": "{{TwilioWorkspaceSid}}",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "Integration.WorkflowSid",
+							"value": "{{TwilioWorkflowSid}}",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "Integration.Channel",
+							"value": "{{TwilioTaskChannelSid}}",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "Integration.FlowSid",
+							"value": "{{TwilioStudioFlowSid}}",
+							"type": "text"
+						},
+						{
+							"key": "LongLived",
+							"value": "true",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://flex-api.twilio.com/v1/FlexFlows/",
+					"protocol": "https",
+					"host": [
+						"flex-api",
+						"twilio",
+						"com"
+					],
+					"path": [
+						"v1",
+						"FlexFlows",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
