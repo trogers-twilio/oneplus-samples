@@ -39,5 +39,39 @@ export default class ChatAutoAcceptPlugin extends FlexPlugin {
         });
       }
     });
+
+    flex.Actions.addListener('afterAcceptTask', (payload) => {
+      const { task } = payload;
+      const { attributes: taskAttributes } = task;
+      const { attributes: workerAttributes } = manager.workerClient;
+      const { full_name: workerName } = workerAttributes;
+
+      if (TaskHelper.isChatBasedTask(task)) {
+        const { channelSid } = taskAttributes;
+  
+        const sendGreeting = () => {
+          const greetingDelay = 3000;
+          setTimeout(() => {
+            const greeting = `Hello, my name is ${workerName}. How can I help you?`;
+            flex.Actions.invokeAction('SendMessage', {
+              body: greeting,
+              channelSid
+            });
+          }, greetingDelay);
+        }
+        
+        // Once the task is accepted, it takes time to join the agent to the channel.
+        // Polling and checking for the channel is a way to ensure the channel
+        // is ready to go before attempting to send our first message
+        const checkChatReadyDelay = 250;
+        const checkChatReadyInterval = setInterval(() => {
+          const channel = manager.store.getState().flex.chat.channels[channelSid];
+          if (channel && channel.source) {
+            clearInterval(checkChatReadyInterval);
+            sendGreeting();
+          }
+        }, checkChatReadyDelay);
+      }
+    })
   }
 }
