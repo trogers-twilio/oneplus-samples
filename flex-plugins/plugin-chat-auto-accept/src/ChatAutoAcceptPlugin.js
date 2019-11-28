@@ -26,6 +26,17 @@ export default class ChatAutoAcceptPlugin extends FlexPlugin {
       if (TaskHelper.isChatBasedTask(task)) {
         Actions.invokeAction('AcceptTask', { sid });
         Actions.invokeAction('SelectTask', { sid });
+
+        const mediaId = flex.AudioPlayerManager.play({
+          url: 'https://notificationsounds.com/sound-effects/insight-578/download/mp3',
+          repeatable: false
+        });
+      }
+      if (TaskHelper.isCallTask(task)) {
+        const mediaId = flex.AudioPlayerManager.play({
+          url: 'https://notificationsounds.com/sound-effects/insight-578/download/mp3',
+          repeatable: false
+        });
       }
     });
   }
