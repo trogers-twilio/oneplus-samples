@@ -15,20 +15,20 @@
         {
           "event": "incomingMessage",
           "conditions": [],
-          "next": "FF8c63b1041818d51a87ce40eb9d80ad2d",
-          "uuid": "042ba699-e3fc-49b4-96db-45b51509e645"
+          "next": "FF06518ebcf97377ca818d0023082b1a36",
+          "uuid": "df9c22a5-7d86-49d6-be4e-1c8f9cd30b65"
         },
         {
           "event": "incomingCall",
           "conditions": [],
           "next": null,
-          "uuid": "a02d2c46-345a-477a-935a-727b995c8a99"
+          "uuid": "0d929697-bd5c-44d1-ae69-7c8e9a69a20e"
         },
         {
           "event": "incomingRequest",
           "conditions": [],
           "next": null,
-          "uuid": "56352140-3e03-4720-a3d8-dcd13ca7f172"
+          "uuid": "1eb11d1b-6fbd-4fe3-808e-b55fe662024f"
         }
       ],
       "sid": "FF65f9e2d8d879c287052329d0c74afc6b"
@@ -39,11 +39,11 @@
       "properties": {
         "offset": {
           "x": 50,
-          "y": 1560
+          "y": 1260
         },
         "workflow": "WW30f9719bec2cc33896baad48009ea906",
         "channel": "TCe97abe107df7417d4d29c84a7b16afa5",
-        "attributes": "{\"name\": \"{{trigger.message.ChannelAttributes.from}}\", \"channelType\": \"{{trigger.message.ChannelAttributes.channel_type}}\", \"channelSid\": \"{{trigger.message.ChannelSid}}\", \"toNumber\": \"{{trigger.message.ChannelAttributes.to}}\",\"country\":\"{{flow.variables.countryCode}}\",\"language\":\"{{flow.variables.language}}\"}",
+        "attributes": "{\"name\": \"{{trigger.message.ChannelAttributes.from}}\", \"channelType\": \"{{trigger.message.ChannelAttributes.channel_type}}\", \"channelSid\": \"{{trigger.message.ChannelSid}}\", \"toNumber\": \"{{trigger.message.ChannelAttributes.twilioNumber}}\",\"country\":\"{{flow.variables.countryCode}}\",\"language\":\"{{flow.variables.language}}\",\"customers\":{ \"phone\":\"{{flow.variables.customerPhone}}\"}}",
         "timeout": null,
         "priority": null,
         "waitUrl": null,
@@ -53,30 +53,30 @@
         {
           "event": "callComplete",
           "conditions": [],
-          "next": null,
-          "uuid": "c6570c6c-bb7b-4c41-b64d-b51a730c36bd"
+          "next": "FF798c6f032921b1f3cc1d9aac075a34de",
+          "uuid": "6fa710c2-c641-451b-b3b7-06a4c00f428e"
         },
         {
           "event": "failedToEnqueue",
           "conditions": [],
           "next": null,
-          "uuid": "0917d882-c6c0-4b64-ba38-d718aa65eec5"
+          "uuid": "55044eac-aef4-4f8c-b4ff-558a5943ad06"
         },
         {
           "event": "callFailure",
           "conditions": [],
           "next": null,
-          "uuid": "e44a5fff-148a-41b4-a3e8-4e0208846894"
+          "uuid": "4f666e63-fc6b-49b7-b4f8-e25bb93bf478"
         }
       ],
       "sid": "FF2b2a73aab7e35601ecc23fd78d7a6fb1"
     },
     {
-      "name": "SetCountryCode",
+      "name": "SetCountryCodeAndPhone",
       "type": "SetVariables",
       "properties": {
         "offset": {
-          "x": 30,
+          "x": 200,
           "y": 440
         },
         "variables": [
@@ -84,6 +84,10 @@
             "key": "countryCode",
             "value": "{{widgets.FunctionLookupPhoneNumber.parsed.countryCode}}",
             "index": "0"
+          },
+          {
+            "key": "customerPhone",
+            "value": "{{widgets.FunctionLookupPhoneNumber.parsed.customerPhone}}"
           }
         ]
       },
@@ -92,7 +96,7 @@
           "event": "next",
           "conditions": [],
           "next": "FF95bf9bf5340b35dc27b4be908f824856",
-          "uuid": "b12018b4-2ed5-4b05-8724-b4ea8c87a68b"
+          "uuid": "ba13daa7-8235-4ffa-866d-62bf6826b611"
         }
       ],
       "sid": "FF34bebeee44efac1b1414e0c1df239cec"
@@ -102,8 +106,8 @@
       "type": "Function",
       "properties": {
         "offset": {
-          "x": 30,
-          "y": 210
+          "x": -330,
+          "y": 440
         },
         "url": "https://folly-rail-4787.twil.io/lookup-source-number",
         "timeout": null,
@@ -119,13 +123,13 @@
           "event": "success",
           "conditions": [],
           "next": "FF34bebeee44efac1b1414e0c1df239cec",
-          "uuid": "9a0d7801-9c14-4b58-ac25-5b1982026377"
+          "uuid": "d34ef7b5-25be-4c70-b52b-9c39687b38fa"
         },
         {
           "event": "fail",
           "conditions": [],
           "next": null,
-          "uuid": "daede5c4-3552-4b97-97ae-78e3d905d8f5"
+          "uuid": "22524eac-837e-402e-91f8-956163305f56"
         }
       ],
       "sid": "FF8c63b1041818d51a87ce40eb9d80ad2d"
@@ -135,8 +139,8 @@
       "type": "Function",
       "properties": {
         "offset": {
-          "x": 40,
-          "y": 650
+          "x": -160,
+          "y": 670
         },
         "url": "https://folly-rail-4787.twil.io/get-language-by-country-code",
         "timeout": null,
@@ -152,13 +156,13 @@
           "event": "success",
           "conditions": [],
           "next": "FFcb474bf2be8c7f9f0868db95fabb604b",
-          "uuid": "881410af-0321-4dd1-a959-73152bd57bd4"
+          "uuid": "50b9fe70-2ef1-4136-a829-86aa56819579"
         },
         {
           "event": "fail",
           "conditions": [],
           "next": null,
-          "uuid": "91afecb3-728e-44f2-b619-71a4ccce9112"
+          "uuid": "8ef88b32-b4a1-4557-8224-5f4bfc828136"
         }
       ],
       "sid": "FF95bf9bf5340b35dc27b4be908f824856"
@@ -168,8 +172,8 @@
       "type": "SetVariables",
       "properties": {
         "offset": {
-          "x": 40,
-          "y": 870
+          "x": 200,
+          "y": 690
         },
         "variables": [
           {
@@ -184,7 +188,7 @@
           "event": "next",
           "conditions": [],
           "next": "FF1e739bf37ae87dbf94f561b9ac757f90",
-          "uuid": "5d66d953-786a-4204-a3d9-be19d879224a"
+          "uuid": "43f082ec-3392-4211-9e9f-d4edfbd34dbe"
         }
       ],
       "sid": "FFcb474bf2be8c7f9f0868db95fabb604b"
@@ -195,7 +199,7 @@
       "properties": {
         "offset": {
           "x": 50,
-          "y": 1100
+          "y": 1030
         },
         "url": "https://folly-rail-4787.twil.io/get-message-greeting",
         "timeout": null,
@@ -210,27 +214,66 @@
         {
           "event": "success",
           "conditions": [],
-          "next": "FF60cc03d7fed07c69a7e6a6dffae640a9",
-          "uuid": "b0e6aa4e-8ede-47a9-ac41-2ec91d6d0466"
+          "next": "FF2b2a73aab7e35601ecc23fd78d7a6fb1",
+          "uuid": "957e62da-e466-4705-a2f4-08658e375e87"
         },
         {
           "event": "fail",
           "conditions": [],
           "next": null,
-          "uuid": "7f2fe6b7-6be1-4991-a21b-46308c098cfd"
+          "uuid": "13b46542-2eaa-4b38-ab81-215f817a47ab"
         }
       ],
       "sid": "FF1e739bf37ae87dbf94f561b9ac757f90"
     },
     {
-      "name": "SendGreeting",
-      "type": "Message",
+      "name": "SendWaitQueueMessage",
+      "type": "MessagePrompt",
       "properties": {
         "offset": {
           "x": 50,
-          "y": 1320
+          "y": 1710
         },
         "body": "{{widgets.FunctionGetGreeting.parsed.message}}",
+        "from": "{{flow.channel.address}}",
+        "timeout": 3600,
+        "save_response_as": null,
+        "media_url": null,
+        "service": "{{trigger.message.InstanceSid}}",
+        "channel": "{{trigger.message.ChannelSid}}",
+        "attributes": null
+      },
+      "transitions": [
+        {
+          "event": "incomingMessage",
+          "conditions": [],
+          "next": "FFfc37ed1629b29b5986aa14c1497ceecc",
+          "uuid": "0cc7f265-8d28-4075-a7dd-98f92763c75e"
+        },
+        {
+          "event": "timeout",
+          "conditions": [],
+          "next": null,
+          "uuid": "5b903205-0403-4708-baf0-261ad4cc3650"
+        },
+        {
+          "event": "deliveryFailure",
+          "conditions": [],
+          "next": null,
+          "uuid": "116cab53-9028-49ed-a44a-4031bb549052"
+        }
+      ],
+      "sid": "FF7984595347dddfacbcf8d0ca12b68b64"
+    },
+    {
+      "name": "SendSurveyThankYou",
+      "type": "Message",
+      "properties": {
+        "offset": {
+          "x": 60,
+          "y": 2850
+        },
+        "body": "Thank you for taking the survey.",
         "from": "{{flow.channel.address}}",
         "to": "{{contact.channel.address}}",
         "media_url": null,
@@ -242,17 +285,439 @@
         {
           "event": "sent",
           "conditions": [],
-          "next": "FF2b2a73aab7e35601ecc23fd78d7a6fb1",
-          "uuid": "e35f1593-52d4-47dd-8626-c42b3272583b"
+          "next": "FF649c1c7c97379efc270558edbf436228",
+          "uuid": "ad06dccb-34d0-46ae-8b76-a8909bf96865"
         },
         {
           "event": "failed",
           "conditions": [],
           "next": null,
-          "uuid": "3e4ee960-8131-4bd7-9734-16d70f9b13c6"
+          "uuid": "37e88398-7d68-4e34-9fba-788f3478da40"
         }
       ],
-      "sid": "FF60cc03d7fed07c69a7e6a6dffae640a9"
+      "sid": "FFde16453d710e5fc6a93fd0f5498bc1fc"
+    },
+    {
+      "name": "SendReplySurveyQuestion1",
+      "type": "MessagePrompt",
+      "properties": {
+        "offset": {
+          "x": -120,
+          "y": 2090
+        },
+        "body": "On a scale of 1 to 5, with 5 being very satisied, how satisfied are you with the service you received?",
+        "from": "{{flow.channel.address}}",
+        "timeout": 3600,
+        "save_response_as": null,
+        "media_url": null,
+        "service": "{{trigger.message.InstanceSid}}",
+        "channel": "{{trigger.message.ChannelSid}}",
+        "attributes": null
+      },
+      "transitions": [
+        {
+          "event": "incomingMessage",
+          "conditions": [],
+          "next": "FFee01494d4c89517942c773daa3341a05",
+          "uuid": "fe32cd6e-435d-46de-99f3-f5c36d6174ca"
+        },
+        {
+          "event": "timeout",
+          "conditions": [],
+          "next": "FF40ba1227aab8f2ec26ffa1b3ab39ed60",
+          "uuid": "744c879d-98a8-4ae4-9ae1-0e0866d42d9a"
+        },
+        {
+          "event": "deliveryFailure",
+          "conditions": [],
+          "next": null,
+          "uuid": "d8db02f1-b459-442a-9866-b7446860b45f"
+        }
+      ],
+      "sid": "FF3d85c67637a87654783ed6fb41e1ead1"
+    },
+    {
+      "name": "SendReplySurveyQuestion2",
+      "type": "MessagePrompt",
+      "properties": {
+        "offset": {
+          "x": -120,
+          "y": 2370
+        },
+        "body": "On a scale of 1 to 5, with 5 being very helpful, how helpful was the representative you just worked with?",
+        "from": "{{flow.channel.address}}",
+        "timeout": 3600,
+        "save_response_as": null,
+        "media_url": null,
+        "service": "{{trigger.message.InstanceSid}}",
+        "channel": "{{trigger.message.ChannelSid}}",
+        "attributes": null
+      },
+      "transitions": [
+        {
+          "event": "incomingMessage",
+          "conditions": [],
+          "next": "FF4a0508f99504d3bf0b06f80278018fa4",
+          "uuid": "831fd20f-ef47-4e15-803f-1c8ff528ffd4"
+        },
+        {
+          "event": "timeout",
+          "conditions": [],
+          "next": "FF40ba1227aab8f2ec26ffa1b3ab39ed60",
+          "uuid": "d049d2ee-06b3-49a9-8901-574d4071803e"
+        },
+        {
+          "event": "deliveryFailure",
+          "conditions": [],
+          "next": null,
+          "uuid": "b0a4b2ee-e381-4cb2-aa09-446d96ef6546"
+        }
+      ],
+      "sid": "FF3aecb64806363f44c72495a90b823926"
+    },
+    {
+      "name": "SetSurveyQ1Score",
+      "type": "SetVariables",
+      "properties": {
+        "offset": {
+          "x": 210,
+          "y": 2230
+        },
+        "variables": [
+          {
+            "key": "surveyQ1Score",
+            "value": "{{widgets.SendReplySurveyQuestion1.inbound.Body}}",
+            "index": "0"
+          }
+        ]
+      },
+      "transitions": [
+        {
+          "event": "next",
+          "conditions": [],
+          "next": "FF3aecb64806363f44c72495a90b823926",
+          "uuid": "6a27987e-cbc6-4e55-9bdc-eaf51abbc4cb"
+        }
+      ],
+      "sid": "FFee01494d4c89517942c773daa3341a05"
+    },
+    {
+      "name": "SetSurveyQ2Score",
+      "type": "SetVariables",
+      "properties": {
+        "offset": {
+          "x": 220,
+          "y": 2370
+        },
+        "variables": [
+          {
+            "key": "surveyQ2Score",
+            "value": "{{widgets.SendReplySurveyQuestion2.inbound.Body}}",
+            "index": "0"
+          }
+        ]
+      },
+      "transitions": [
+        {
+          "event": "next",
+          "conditions": [],
+          "next": "FF580ec5841a4bd13fdf517d1f8d278384",
+          "uuid": "3076a7c9-7755-464d-82f2-a06930dd3ae7"
+        }
+      ],
+      "sid": "FF4a0508f99504d3bf0b06f80278018fa4"
+    },
+    {
+      "name": "SetOriginalTaskSid",
+      "type": "SetVariables",
+      "properties": {
+        "offset": {
+          "x": 50,
+          "y": 1480
+        },
+        "variables": [
+          {
+            "key": "originalTaskSid",
+            "value": "{{widgets.SendToLevel1.sid}}",
+            "index": "0"
+          }
+        ]
+      },
+      "transitions": [
+        {
+          "event": "next",
+          "conditions": [],
+          "next": "FF7984595347dddfacbcf8d0ca12b68b64",
+          "uuid": "12d653a8-0755-49af-b385-fdde71c222a5"
+        }
+      ],
+      "sid": "FF798c6f032921b1f3cc1d9aac075a34de"
+    },
+    {
+      "name": "FunctionChatSurveyCleanup",
+      "type": "Function",
+      "properties": {
+        "offset": {
+          "x": 40,
+          "y": 3610
+        },
+        "url": "https://folly-rail-4787.twil.io/chat-survey-cleanup",
+        "timeout": null,
+        "parameters": [
+          {
+            "key": "chatChannelAttributes",
+            "value": "{{widgets.SendReplySurveyQuestion2.inbound.ChannelAttributes}}"
+          },
+          {
+            "key": "chatChannelSid",
+            "value": "{{widgets.SendReplySurveyQuestion2.inbound.ChannelSid}}"
+          },
+          {
+            "key": "taskSid",
+            "value": "{{widgets.FunctionCreateSurveyTask.parsed.taskSid}}",
+            "index": 2
+          }
+        ]
+      },
+      "transitions": [
+        {
+          "event": "success",
+          "conditions": [],
+          "next": null,
+          "uuid": "cc9005a5-9fc4-4ca4-a216-6bae908bad29"
+        },
+        {
+          "event": "fail",
+          "conditions": [],
+          "next": null,
+          "uuid": "21914ddb-be64-4be2-a8b1-86cc28eb1c60"
+        }
+      ],
+      "sid": "FF649c1c7c97379efc270558edbf436228"
+    },
+    {
+      "sid": "FF06518ebcf97377ca818d0023082b1a36",
+      "name": "SetFlowConstants",
+      "type": "SetVariables",
+      "properties": {
+        "variables": [
+          {
+            "key": "surveyWorkflowSid",
+            "value": "WW91e4416d015adbda031f77768f1220f2",
+            "index": 0
+          },
+          {
+            "key": "chatTaskChannelName",
+            "value": "chat",
+            "index": 1
+          }
+        ],
+        "offset": {
+          "x": 50,
+          "y": 180
+        }
+      },
+      "transitions": [
+        {
+          "widgetId": "FF06518ebcf97377ca818d0023082b1a36",
+          "uuid": "db751e82-b572-440f-b838-438930c5a18f",
+          "event": "next",
+          "conditions": [],
+          "next": "FF8c63b1041818d51a87ce40eb9d80ad2d"
+        }
+      ]
+    },
+    {
+      "sid": "FF40ba1227aab8f2ec26ffa1b3ab39ed60",
+      "name": "SetSurveyTaskAttributes",
+      "type": "SetVariables",
+      "properties": {
+        "variables": [
+          {
+            "key": "surveyTaskAttributes",
+            "value": "{\"name\": \"{{trigger.message.ChannelAttributes.from}}\", \"channelType\": \"{{trigger.message.ChannelAttributes.channel_type}}\", \"channelSid\": \"{{trigger.message.ChannelSid}}\", \"toNumber\": \"{{trigger.message.ChannelAttributes.to}}\",\"customers\":{ \"phone\":\"{{flow.variables.customerPhone}}\"},\"conversations\":{\"conversation_id\":\"{{flow.variables.originalTaskSid}}\",\"conversation_measure_1\":{{flow.variables.surveyQ1Score | abs | to_json}},\"conversation_measure_2\":{{flow.variables.surveyQ2Score | abs | to_json}},\"conversation_attribute_2\":\"{{flow.variables.surveyQ3Response}}\",\"queue_time\":0,\"abandoned\":\"No\"}}",
+            "index": 0
+          }
+        ],
+        "offset": {
+          "x": 50,
+          "y": 2870
+        }
+      },
+      "transitions": [
+        {
+          "widgetId": "FF40ba1227aab8f2ec26ffa1b3ab39ed60",
+          "uuid": "094891dc-a3a5-4e7d-b06a-c21b625c526f",
+          "event": "next",
+          "conditions": [],
+          "next": "FFef365b8050177d66730e3066557a308e"
+        }
+      ]
+    },
+    {
+      "sid": "FFef365b8050177d66730e3066557a308e",
+      "name": "FunctionCreateSurveyTask",
+      "type": "Function",
+      "properties": {
+        "offset": {
+          "x": 60,
+          "y": 2910
+        },
+        "url": "https://folly-rail-4787.twil.io/create-taskrouter-task",
+        "parameters": [
+          {
+            "key": "taskAttributes",
+            "value": "{{flow.variables.surveyTaskAttributes}}"
+          },
+          {
+            "key": "taskChannel",
+            "value": "{{flow.variables.chatTaskChannelName}}"
+          },
+          {
+            "key": "workflowSid",
+            "value": "{{flow.variables.surveyWorkflowSid}}",
+            "index": 2
+          }
+        ]
+      },
+      "transitions": [
+        {
+          "widgetId": "FFef365b8050177d66730e3066557a308e",
+          "uuid": "31ea9428-9501-44aa-9bdf-e78cd90c8a5a",
+          "event": "success",
+          "conditions": [],
+          "next": "FFde16453d710e5fc6a93fd0f5498bc1fc"
+        },
+        {
+          "widgetId": "FFef365b8050177d66730e3066557a308e",
+          "uuid": "182abdc7-3997-47fe-943b-57cd9282fd7a",
+          "event": "fail",
+          "conditions": [],
+          "next": null
+        }
+      ]
+    },
+    {
+      "sid": "FF580ec5841a4bd13fdf517d1f8d278384",
+      "name": "SendReplySurveyQuestion3",
+      "type": "MessagePrompt",
+      "properties": {
+        "from": "{{flow.channel.address}}",
+        "channel": "{{trigger.message.ChannelSid}}",
+        "service": "{{trigger.message.InstanceSid}}",
+        "timeout": 3600,
+        "offset": {
+          "x": -120,
+          "y": 2600
+        },
+        "body": "In your own words, what feedback would you give for the previous interaction?"
+      },
+      "transitions": [
+        {
+          "widgetId": "FF580ec5841a4bd13fdf517d1f8d278384",
+          "uuid": "f3842d2a-4a7e-4afc-bf81-d03577ab7d00",
+          "event": "incomingMessage",
+          "conditions": [],
+          "next": "FFbd0f232bf1896dacde39697245d53a29"
+        },
+        {
+          "widgetId": "FF580ec5841a4bd13fdf517d1f8d278384",
+          "uuid": "1c3feefe-4e6b-46e9-a730-919849e15764",
+          "event": "timeout",
+          "conditions": [],
+          "next": "FF40ba1227aab8f2ec26ffa1b3ab39ed60"
+        },
+        {
+          "widgetId": "FF580ec5841a4bd13fdf517d1f8d278384",
+          "uuid": "4f168bf9-faed-43ea-afb5-7dda8fa15268",
+          "event": "deliveryFailure",
+          "conditions": [],
+          "next": null
+        }
+      ]
+    },
+    {
+      "sid": "FFbd0f232bf1896dacde39697245d53a29",
+      "name": "SetSurveyQ3Response",
+      "type": "SetVariables",
+      "properties": {
+        "variables": [
+          {
+            "key": "surveyQ3Response",
+            "value": "{{widgets.SendReplySurveyQuestion3.inbound.Body}}"
+          }
+        ],
+        "offset": {
+          "x": 210,
+          "y": 2760
+        }
+      },
+      "transitions": [
+        {
+          "widgetId": "FFbd0f232bf1896dacde39697245d53a29",
+          "uuid": "ff2faf8b-7c4c-4c6e-b481-2c3cf165898f",
+          "event": "next",
+          "conditions": [],
+          "next": "FF40ba1227aab8f2ec26ffa1b3ab39ed60"
+        }
+      ]
+    },
+    {
+      "sid": "FFfc37ed1629b29b5986aa14c1497ceecc",
+      "name": "SplitSurveyConsent",
+      "type": "Branch",
+      "properties": {
+        "offset": {
+          "x": 30,
+          "y": 1960
+        },
+        "input": "{{widgets.SendWaitQueueMessage.inbound.Body}}"
+      },
+      "transitions": [
+        {
+          "widgetId": "FFfc37ed1629b29b5986aa14c1497ceecc",
+          "uuid": "1da6f8aa-4592-4ae8-bff8-dbeb8765c3de",
+          "event": "noMatch",
+          "conditions": [],
+          "next": null
+        },
+        {
+          "uuid": "4ae71ee5-8f91-4347-a3c0-4783035af23f",
+          "event": "match",
+          "conditions": [
+            {
+              "type": "contains",
+              "friendly_name": "yes",
+              "value": "yes"
+            }
+          ],
+          "next": "FF3d85c67637a87654783ed6fb41e1ead1"
+        },
+        {
+          "uuid": "7d758f4c-2ba8-4da2-9554-a34afb2af7dc",
+          "event": "match",
+          "conditions": [
+            {
+              "type": "contains",
+              "friendly_name": "Yes",
+              "value": "Yes"
+            }
+          ],
+          "next": "FF3d85c67637a87654783ed6fb41e1ead1"
+        },
+        {
+          "uuid": "3f064411-fb11-4671-a7bc-e927f4951aae",
+          "event": "match",
+          "conditions": [
+            {
+              "type": "contains",
+              "friendly_name": "YES",
+              "value": "YES"
+            }
+          ],
+          "next": "FF3d85c67637a87654783ed6fb41e1ead1"
+        }
+      ]
     }
   ]
 }
