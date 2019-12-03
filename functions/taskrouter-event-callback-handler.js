@@ -6,6 +6,11 @@ const ChannelTypes = {
   whatsapp: 'whatsapp'
 };
 
+const surveyOffers = {
+  'en-US': "Would you be willing to take a brief two question survey? Please reply 'yes' or 'no'",
+  'zh-CN': `您願意進行簡短的兩個問題調查嗎？請回答“是”或“否”`
+};
+
 const successHandler = (callback, props) => {
   const response = {
     ...props,
@@ -15,11 +20,10 @@ const successHandler = (callback, props) => {
 }
 
 const sendChatSurveyRequest = async (client, attributes) => {
-  const { name, toNumber } = attributes;
+  const { language, name, toNumber } = attributes;
   console.log(`Sending survey request to ${name} from ${toNumber}`);
   try {
-    const body = 'Would you be willing to take a brief two question survey? '
-      + "Please reply 'yes' or 'no'.";
+    const body = surveyOffers[language];
     const message = await client.messages
       .create({
         body,
