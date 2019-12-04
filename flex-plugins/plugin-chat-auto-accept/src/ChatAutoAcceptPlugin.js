@@ -1,6 +1,8 @@
 import React from 'react';
 import { Actions, TaskHelper, VERSION } from '@twilio/flex-ui';
 import { FlexPlugin } from 'flex-plugin';
+import CustomEndChatButton from './CustomEndChatButton';
+import CustomCompleteTaskButton from './CustomCompleteTaskButton';
 
 const PLUGIN_NAME = 'ChatAutoAcceptPlugin';
 
@@ -72,6 +74,21 @@ export default class ChatAutoAcceptPlugin extends FlexPlugin {
           }
         }, checkChatReadyDelay);
       }
-    })
+    });
+
+    const isChatTask = (props) => {
+      return TaskHelper.isLiveChat(props.task);
+    };
+
+    const isInWrapupMode = (props) => {
+      return TaskHelper.isInWrapupMode(props.task);
+    }
+
+    // The three lines below remove the TaskCanvas Header and add a button to end
+    // the chat and complete the task to the task list item since these buttons
+    // are no longer visible once the TaskCanvas Header is removed
+    flex.TaskCanvas.Content.remove('header');
+    flex.TaskListButtons.Content.add(<CustomEndChatButton key="custom-end-chat-button" />, { if: isChatTask });
+    flex.TaskListButtons.Content.add(<CustomCompleteTaskButton key="custom-complete-task-button" />, { if: isInWrapupMode });
   }
 }
