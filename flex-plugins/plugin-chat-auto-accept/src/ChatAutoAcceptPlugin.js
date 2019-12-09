@@ -84,11 +84,47 @@ export default class ChatAutoAcceptPlugin extends FlexPlugin {
       return TaskHelper.isInWrapupMode(props.task);
     }
 
-    // The three lines below remove the TaskCanvas Header and add a button to end
+    // This block of code removes the TaskCanvas Header and adds a button to end
     // the chat and complete the task to the task list item since these buttons
     // are no longer visible once the TaskCanvas Header is removed
     flex.TaskCanvas.Content.remove('header');
     flex.TaskListButtons.Content.add(<CustomEndChatButton key="custom-end-chat-button" />, { if: isChatTask });
     flex.TaskListButtons.Content.add(<CustomCompleteTaskButton key="custom-complete-task-button" />, { if: isInWrapupMode });
+
+    // This block of code is for enabling post call survey. We're tapping into
+    // the HangupCall action to prevent the call from disconnecting when the agent
+    // clicks Hangup Call. Instead, we're calling a custom Twilio Function to
+    // <Redirect> the call to the Survey Studio Flow webhook.
+    const redirectCallToSurvey = (task) => {
+      const { attributes, taskSid } = task;
+      const { call_sid, language } = attributes;
+      const fetchUrl = `https://${manager.configuration.serviceBaseUrl}/redirect-call-to-survey`;
+      const flexUserToken = manager.store.getState().flex.session.ssoTokenPayload.token;
+
+      return fetch(fetchUrl, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        method: 'POST',
+        body: (
+          `token=${flexUserToken}`
+          + `&callSid=${call_sid}`
+          + `&language=${language}`
+          + `&taskSid=${taskSid}`
+        )
+      }).then(response => response.json());
+    }
+
+    flex.Actions.addListener('beforeHangupCall', async (payload, abortOriginal) => {
+      const { task } = payload;
+
+      const redirectResult = await redirectCallToSurvey(task);
+      if (redirectResult.status !== 200) {
+        console.error('Failed to redirect call to survey.', redirectResult);
+        return;
+      }
+      console.log('Call redirected to survey');
+      abortOriginal();
+    });
   }
 }

@@ -50,6 +50,10 @@ const handleTaskWrapup = async (context, event, callback) => {
       await sendChatSurveyRequest(client, attributes);
       return successHandler(callback);
     }
+    default: {
+      // Nothing to do here
+      return successHandler(callback);
+    }
   }
 };
 
@@ -62,8 +66,6 @@ exports.handler = async function(context, event, callback) {
     case TaskEvents.wrapup:
       return handleTaskWrapup(context, event, callback);
     default:
-      // nothing to do here
+      return successHandler(callback);
   }
-
-  return successHandler(callback);
 };
