@@ -1,11 +1,15 @@
 const getWorkerFullName = async (client, context, friendlyName) => {
+  const {
+    TWILIO_WORKSPACE_SID
+  } = context;
+
   let workers;
   try {
     // If running this in a stateful backend, could list all the workers and cache them.
     // You could then search your local cache first, and if you don't find a matching worker,
     // fetch the full worker list again, update your cache, and again look for a match.
     workers = await client.taskrouter
-      .workspaces(context.TWILIO_WORKSPACE_SID)
+      .workspaces(TWILIO_WORKSPACE_SID)
       .workers
       .list({ friendlyName });
     console.log('Retrieved workers');
@@ -38,6 +42,10 @@ const getWorkerFullName = async (client, context, friendlyName) => {
 exports.handler = async function (context, event, callback) {
   const client = Twilio(context.ACCOUNT_SID, context.AUTH_TOKEN);
   const response = {};
+
+  const {
+    TWILIO_CHAT_SERVICE_SID
+  } = context;
 
   const CHAT_MESSAGE_SID_PREFIX = 'IM';
   const CHAT_CHANNEL_SID_PREFIX = 'CH';
@@ -110,12 +118,24 @@ exports.handler = async function (context, event, callback) {
     return callback(error, null);
   }
 
+  let chatChannel;
+  try {
+    chatChannel = await client.chat
+      .services(TWILIO_CHAT_SERVICE_SID)
+      .channels(chatChannelSid)
+      .fetch();
+    console.log('Retrieved chat channel');
+  } catch (error) {
+    console.error(`Error fetching chat channel ${chatChannelSid}.`, error);
+  }
+  const chatAttributes = chatChannel.attributes && JSON.parse(chatChannel.attributes);
+
   let chatMembers;
   try {
     // If running this in a stateful backend, could cache the chatMembers so you
     // don't need to retrieve them again for future messages if you already have them.
     chatMembers = await client.chat
-      .services(context.TWILIO_CHAT_SERVICE_SID)
+      .services(TWILIO_CHAT_SERVICE_SID)
       .channels(chatChannelSid)
       .members
       .list();
@@ -128,7 +148,7 @@ exports.handler = async function (context, event, callback) {
   let chatMessage;
   try {
     chatMessage = await client.chat
-      .services(context.TWILIO_CHAT_SERVICE_SID)
+      .services(TWILIO_CHAT_SERVICE_SID)
       .channels(chatChannelSid)
       .messages(chatMessageSid)
       .fetch();
@@ -171,6 +191,7 @@ exports.handler = async function (context, event, callback) {
   // attributes. This could then be written to the appropriate RightNow record.
   const normalizedChatMessage = {
     timestamp: interactionDateUpdated,
+    taskSid: (chatAttributes && chatAttributes.activeTask) || 'None',
     sender: chatMemberName,
     body,
     attributes
