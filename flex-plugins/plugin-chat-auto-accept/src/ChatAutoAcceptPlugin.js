@@ -3,6 +3,7 @@ import { Actions, TaskHelper, VERSION } from '@twilio/flex-ui';
 import { FlexPlugin } from 'flex-plugin';
 import CustomEndChatButton from './CustomEndChatButton';
 import CustomCompleteTaskButton from './CustomCompleteTaskButton';
+import CustomTaskInfo from './CustomTaskInfo';
 
 const PLUGIN_NAME = 'ChatAutoAcceptPlugin';
 
@@ -126,5 +127,8 @@ export default class ChatAutoAcceptPlugin extends FlexPlugin {
       console.log('Call redirected to survey');
       abortOriginal();
     });
+
+    // To add custom information to the Task Info Panel
+    flex.TaskInfoPanel.Content.add(<CustomTaskInfo key="custom-task-info" />, { sortOrder: -1 });
   }
 }
