@@ -118,18 +118,6 @@ exports.handler = async function (context, event, callback) {
     return callback(error, null);
   }
 
-  let chatChannel;
-  try {
-    chatChannel = await client.chat
-      .services(TWILIO_CHAT_SERVICE_SID)
-      .channels(chatChannelSid)
-      .fetch();
-    console.log('Retrieved chat channel');
-  } catch (error) {
-    console.error(`Error fetching chat channel ${chatChannelSid}.`, error);
-  }
-  const chatAttributes = chatChannel.attributes && JSON.parse(chatChannel.attributes);
-
   let chatMembers;
   try {
     // If running this in a stateful backend, could cache the chatMembers so you
@@ -157,8 +145,25 @@ exports.handler = async function (context, event, callback) {
     console.error(`Error retrieving chat message ${chatMessageSid} on channel ${chatChannelSid}`, error);
     return callback(error, null);
   }
-
   const { attributes, body, from } = chatMessage;
+  const messageAttributes = attributes && JSON.parse(attributes);
+  if (messageAttributes) {
+    messageAttributes.proxySession = interactionSessionSid;
+  }
+
+  // Adding the proxy session to each message attributes so that the chat channel
+  // polling service can include the proxy session SID for each message written
+  // to RightNow
+  try {
+    await client.chat
+      .services(TWILIO_CHAT_SERVICE_SID)
+      .channels(chatChannelSid)
+      .messages(chatMessageSid)
+      .update({ attributes: JSON.stringify(messageAttributes) });
+    console.log('Chat message attributes updated');
+  } catch (error) {
+    console.error('Error updating chat message attributes.', error);
+  }
 
   // If you're using a stateful backend and have cached the chat members but you don't
   // find a match, then update your cache with the current chat members list and
@@ -191,7 +196,7 @@ exports.handler = async function (context, event, callback) {
   // attributes. This could then be written to the appropriate RightNow record.
   const normalizedChatMessage = {
     timestamp: interactionDateUpdated,
-    taskSid: (chatAttributes && chatAttributes.activeTask) || 'None',
+    proxySession: interactionSessionSid,
     sender: chatMemberName,
     body,
     attributes

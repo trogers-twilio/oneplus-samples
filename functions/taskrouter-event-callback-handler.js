@@ -37,61 +37,6 @@ const sendChatSurveyRequest = async (client, attributes) => {
   }
 };
 
-const updateChatChannelWithActiveTask = async (context, channelSid, taskSid) => {
-  const client = context.getTwilioClient();
-  const {
-    TWILIO_CHAT_SERVICE_SID
-  } = context;
-
-  let chatChannel;
-  try {
-    console.log('Fetching chat channel SID', channelSid);
-    chatChannel = await client.chat
-      .services(TWILIO_CHAT_SERVICE_SID)
-      .channels(channelSid)
-      .fetch();
-  } catch (error) {
-    console.error('Error fetching chat channel.', error);
-    return;
-  }
-  const { attributes } = chatChannel;
-  const chatAttributes = attributes && JSON.parse(attributes);
-  chatAttributes.activeTask = taskSid;
-
-  try {
-    console.log(`Updating chat channel ${channelSid} with attributes`, chatAttributes);
-    await client.chat
-      .services(TWILIO_CHAT_SERVICE_SID)
-      .channels(channelSid)
-      .update({ attributes: JSON.stringify(chatAttributes) });
-    console.log('Chat channel updated');
-  } catch (error) {
-    console.error('Error updating chat channel.', error);
-  }
-}
-
-const handleNewChatTask = async (context, event, callback) => {
-  const { TaskAttributes, TaskSid } = event;
-  
-  const attributes = TaskAttributes && JSON.parse(TaskAttributes);
-  const { channelSid } = attributes;
-  if (channelSid) {
-    await updateChatChannelWithActiveTask(context, channelSid, TaskSid);
-  }
-  return successHandler(callback);
-}
-
-const handleTaskCreated = (context, event, callback) => {
-  const { TaskChannelUniqueName } = event;
-
-  switch (TaskChannelUniqueName) {
-    case 'chat': 
-      return handleNewChatTask(context, event, callback)
-    default:
-      return successHandler(callback);
-  }
-}
-
 const handleTaskWrapup = async (context, event, callback) => {
   const client = context.getTwilioClient();
   const { TaskAttributes } = event;
@@ -120,8 +65,6 @@ exports.handler = async function(context, event, callback) {
   console.log('TaskChannelUniqueName:', TaskChannelUniqueName);
 
   switch (EventType) {
-    case TaskEvents.created:
-      return handleTaskCreated(context, event, callback);
     case TaskEvents.wrapup:
       return handleTaskWrapup(context, event, callback);
     default:
